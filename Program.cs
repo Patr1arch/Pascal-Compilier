@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using myPascal.Tokenizer;
 
 namespace myPascal
 {
@@ -18,24 +17,22 @@ namespace myPascal
                     // TODO: Start Lexer session
                     if (File.Exists(Environment.CurrentDirectory + "/" + args[1]))
                     {
-                        Console.WriteLine("Hello World!");
                         return (0, args[1]);
                     }
                     else
                     {
                         Console.WriteLine("Error! File not found.");
-                        return (1, "");
+                        return (-1, "");
                     }
                 default:
                     if (File.Exists(Environment.CurrentDirectory + "/" + args[0]))
                     {
-                        Console.WriteLine("Hello World!");
-                        return (0, args[0]);
+                        return (1, args[0]);
                     }
                     else
                     {
                         Console.WriteLine("Error! File not found.");
-                        return (1, "");
+                        return (-1, "");
                     }
             }
         }
@@ -43,13 +40,14 @@ namespace myPascal
         static void Main(string[] args)
         {
             var obj = ProceedArguments(args.ToList());
-            if (obj.Item1 == 0)
+            Lexer lexer = new Lexer(obj.Item2);
+            switch (obj.Item1)
             {
-                Lexer lexer = new Lexer(obj:q.Item2);
-                // while (lexer.NextToken() == 'a')
-                // {
-                //     
-                // }
+                case 0:
+                    
+                    break;
+                case 1:
+                    break;
             }
         }
     }
