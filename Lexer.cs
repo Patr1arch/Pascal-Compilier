@@ -146,6 +146,12 @@ namespace myPascal
                 }
                 if (Pascal.Keywords.Contains(identifier.SourceCode.ToLower()))
                 {
+                    if (currSym == '.' && identifier.SourceCode.ToLower() == "end")
+                    {
+                        identifier.SourceCode += currSym;
+                        identifier.Value += currSym;
+                        
+                    }
                     _currentLexem = new Keyword(identifier);
                 }
                 else
