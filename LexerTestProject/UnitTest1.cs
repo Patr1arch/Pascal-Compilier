@@ -282,3 +282,11 @@ namespace LexerTestProject
             Assert.AreEqual(e.Message, "TestPascalFiles\\ExsUnclosedComment.pas(2, 5) Fatal: Detected unclosed comment");
         }
         
+        [Test]
+        public void ExcLongString()
+        {
+            Lexer testLexer = new Lexer("TestPascalFiles\\ExcLongString.pas");
+            testLexer.SkipLexems(11);
+            Exception e = Assert.Throws<Exception>(() => testLexer.NextLexem());
+            // Assert.AreEqual(e.Message, "TestPascalFiles\\ExsUnclosedComment.pas(2, 5) Fatal: Detected unclosed comment");
+        }

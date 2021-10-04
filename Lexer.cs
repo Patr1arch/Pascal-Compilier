@@ -23,6 +23,14 @@ namespace myPascal
             _buffer = ' ';
             _filePath = filePath;
         }
+        
+        public void SkipLexems(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                NextLexem();
+            }
+        }
 
         public List<AbstractLexem> GetAllLexems()
         {
@@ -150,6 +158,13 @@ namespace myPascal
                     identifier.SourceCode += _buffer;
                     _currentSymbolNumber++;
                 }
+
+                if (identifier.SourceCode.Length > 255)
+                {
+                    throw new Exception($"{_filePath}{identifier.Coordinates} " +
+                                        $"Fatal: Length of string more than 255");
+                }
+
                 if (Pascal.Keywords.Contains(identifier.SourceCode.ToLower()))
                 {
                     if (currSym == '.' && identifier.SourceCode.ToLower() == "end")
