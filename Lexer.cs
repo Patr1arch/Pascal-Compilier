@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using myPascal.Lexems;
+using ExtensionMethods;
 
 namespace myPascal
 {
@@ -50,10 +51,45 @@ namespace myPascal
         {
             // EOF -- will be fine, 'cause 56635 is not valid symbol in unicode table 
             char currSym = CheckForWhitespaces(_buffer);
-            _buffer = currSym;
-            _currentSymbolNumber++;
-            
-            if (char.IsLetter(currSym))
+            if (char.IsDigit(currSym) || currSym == Pascal.BinaryIdentifier || currSym == Pascal.HexIdentifier)
+            {
+                AbstractLiteral literal = new AbstractLiteral(_currentStringNumber, _currentSymbolNumber);
+                var detectedType = currSym == Pascal.BinaryIdentifier ? Pascal.NumericTypes.Binary :
+                    currSym == Pascal.HexIdentifier ? Pascal.NumericTypes.Hex : Pascal.NumericTypes.Decimal;
+                literal.SourceCode += currSym;
+                // invariant: we get lexem and the next symbol, start with 2'd symbol of lexem
+                while ((currSym = (char) _stream.Read()).IsDigitOrHexOrBinaryOrFloat())
+                {
+                    _buffer = currSym;
+                    if (currSym.IsFloat() && detectedType != Pascal.NumericTypes.Hex)
+                        detectedType = Pascal.NumericTypes.Real;
+                    literal.SourceCode += _buffer;
+                    _currentSymbolNumber++;
+                }
+
+                if (detectedType == Pascal.NumericTypes.Binary)
+                {
+                    literal.Value = Convert.ToInt64(literal.SourceCode.Substring(1), 2).ToString();
+                }
+                else if (detectedType == Pascal.NumericTypes.Hex)
+                {
+                    literal.Value = Convert.ToInt64(literal.SourceCode.Substring(1), 16).ToString();
+                }
+                else if (detectedType == Pascal.NumericTypes.Real)
+                {
+                    literal.Value = Convert.ToDouble(literal.SourceCode).ToString();
+                }
+                else
+                {
+                    literal.Value = Convert.ToInt64(literal.SourceCode, 10).ToString();
+                }
+
+                if (detectedType == Pascal.NumericTypes.Real)
+                    _currentLexem = new RealLiteral(literal);
+                else
+                    _currentLexem = new IntegerLiteral(literal);
+            }
+            else if (char.IsLetter(currSym))
             {
                 AbstractIdentifier identifier = new AbstractIdentifier(_currentStringNumber, _currentSymbolNumber);
                 identifier.Value += currSym;

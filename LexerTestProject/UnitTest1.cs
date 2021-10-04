@@ -73,4 +73,52 @@ namespace LexerTestProject
                                                       "Identifier\tSource Code: World\tValue: \"World\"");
         }
 
+        [Test]
+        public void IntLiteral()
+        {
+            Lexer testLexer = new Lexer("TestPascalFiles\\IntLiteral.pas");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:1\tType: " +
+                                                      "IntegerLiteral\tSource Code: 123\tValue: \"123\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 2:1\tType: " +
+                                                      "IntegerLiteral\tSource Code: 456\tValue: \"456\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 3:1\tType: " +
+                                                      "IntegerLiteral\tSource Code: 7\tValue: \"7\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 4:1\tType: " +
+                                                      "IntegerLiteral\tSource Code: 8\tValue: \"8\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 5:1\tType: " +
+                                                      "IntegerLiteral\tSource Code: 90\tValue: \"90\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 6:1\tType: " +
+                                                      "IntegerLiteral\tSource Code: 0001\tValue: \"1\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 7:1\tType: " +
+                                                      "IntegerLiteral\tSource Code: 0000\tValue: \"0\"");
+        }
+        
+        [Test]
+        public void HexesAndBinaries()
+        {
+            Lexer testLexer = new Lexer("TestPascalFiles\\HexesAndBinaries.pas");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:1\tType: " +
+                                                      "IntegerLiteral\tSource Code: $DEADBEEF\tValue: \"3735928559\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 2:1\tType: " +
+                                                      "IntegerLiteral\tSource Code: $DEAD\tValue: \"57005\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 3:1\tType: " +
+                                                      "IntegerLiteral\tSource Code: $beef\tValue: \"48879\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 4:1\tType: " +
+                                                      "IntegerLiteral\tSource Code: %00000\tValue: \"0\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 5:1\tType: " +
+                                                      "IntegerLiteral\tSource Code: %10101\tValue: \"21\"");
+        }
+        
 }
