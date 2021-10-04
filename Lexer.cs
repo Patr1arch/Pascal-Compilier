@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -35,6 +35,20 @@ namespace myPascal
         public List<AbstractLexem> GetAllLexems()
         {
             var res = new List<AbstractLexem>();
+            // invariant: we reach end of file, but we don't proceed symbol previous EOF
+            while (!_stream.EndOfStream)
+            {
+                NextLexem();
+                if (res.Count == 0 || res.Last() != _currentLexem)
+                    res.Add(_currentLexem);
+            }
+
+            if (!char.IsWhiteSpace(CheckForWhitespaces(_buffer)))
+            {
+                NextLexem();
+                res.Add(_currentLexem);
+            }
+
             return res;
         }
 
@@ -172,6 +186,8 @@ namespace myPascal
                         identifier.SourceCode += currSym;
                         identifier.Value += currSym;
                         
+                        // To satisfy common invarant
+                        currSym = (char) _stream.Read();
                     }
                     _currentLexem = new Keyword(identifier);
                 }
@@ -189,6 +205,8 @@ namespace myPascal
                 if ((currSym = (char) _stream.Read()) == '=' && _buffer == ':')
                 {
                     _currentLexem = new Operator(separator);
+                    // To satisfy common invarant
+                    currSym = (char) _stream.Read();
                 }
                 else
                 {

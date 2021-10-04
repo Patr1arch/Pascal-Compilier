@@ -290,3 +290,20 @@ namespace LexerTestProject
             Exception e = Assert.Throws<Exception>(() => testLexer.NextLexem());
             // Assert.AreEqual(e.Message, "TestPascalFiles\\ExsUnclosedComment.pas(2, 5) Fatal: Detected unclosed comment");
         }
+
+        [Test]
+        public void GetAllLexems()
+        {
+            Lexer testLexer = new Lexer("TestPascalFiles\\GetAllLexems.pas");
+            var res = testLexer.GetAllLexems();
+            Assert.AreEqual(res[0].ToString(), "Coordinates: 1:1\tType: " +
+                                                      "Separator\tSource Code: \"\tValue: \"\"\"");
+            Assert.AreEqual(res[1].ToString(), "Coordinates: 1:2\tType: " +
+                                    "Keyword\tSource Code: string\tValue: \"string\"");
+            Assert.AreEqual(res[2].ToString(), "Coordinates: 1:8\tType: " +
+                                    "Separator\tSource Code: \"\tValue: \"\"\"");
+            Assert.AreEqual(res[3].ToString(), "Coordinates: 1:9\tType: " +
+                                    "Separator\tSource Code: ;\tValue: \";\"");
+        }
+    }
+}
