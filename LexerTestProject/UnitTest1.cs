@@ -121,4 +121,30 @@ namespace LexerTestProject
                                                       "IntegerLiteral\tSource Code: %10101\tValue: \"21\"");
         }
         
-}
+        [Test]
+        public void CommendedCode()
+        {
+            Lexer testLexer = new Lexer("TestPascalFiles\\CommentedCode.pas");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 12:1\tType: " +
+                                                      "Keyword\tSource Code: program\tValue: \"program\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 12:9\tType: " +
+                                                      "Identifier\tSource Code: Hello\tValue: \"Hello\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 14:1\tType: " +
+                                                      "Identifier\tSource Code: prog\tValue: \"prog\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 15:1\tType: " +
+                                                      "Keyword\tSource Code: program\tValue: \"program\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 15:9\tType: " +
+                                                      "Identifier\tSource Code: Hello\tValue: \"Hello\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 17:1\tType: " +
+                                                      "Keyword\tSource Code: program\tValue: \"program\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 18:7\tType: " +
+                                                      "Identifier\tSource Code: Hello\tValue: \"Hello\"");
+        }
+        

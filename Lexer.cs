@@ -28,6 +28,41 @@ namespace myPascal
             return res;
         }
 
+        private bool CheckForComment(char sym)
+        {
+            sym = CheckForWhitespaces(sym);
+            if (sym == '{')
+            {
+                AbstractLexem comment = new AbstractLexem(_currentStringNumber, _currentSymbolNumber);
+                while ((sym = (char) _stream.Read()) != '}') 
+                {
+                    if (sym == '\n')
+                    {
+                        _currentSymbolNumber = 1;
+                        _currentStringNumber++;
+                    }
+                    else
+                        _currentSymbolNumber++;
+                }
+                _buffer = sym;
+                return true;
+            }
+            else if (sym == '/' && (sym = (char) _stream.Read()) == '/') // Cautions
+            {
+                while (sym != '\n')
+                {
+                    sym = (char) _stream.Read();
+                }
+                _currentSymbolNumber = 0;
+                _currentStringNumber++;
+                _buffer = sym;
+                return true;
+            }
+
+            _buffer = sym;
+            return false;
+        }
+
         private char CheckForWhitespaces(char sym)
         {
             while (char.IsWhiteSpace(sym))
@@ -51,6 +86,13 @@ namespace myPascal
         {
             // EOF -- will be fine, 'cause 56635 is not valid symbol in unicode table 
             char currSym = CheckForWhitespaces(_buffer);
+            if (CheckForComment(_buffer))
+            {
+                _currentSymbolNumber++;
+                currSym = CheckForWhitespaces((char) _stream.Read());
+            }
+            
+
             if (char.IsDigit(currSym) || currSym == Pascal.BinaryIdentifier || currSym == Pascal.HexIdentifier)
             {
                 AbstractLiteral literal = new AbstractLiteral(_currentStringNumber, _currentSymbolNumber);
@@ -100,6 +142,8 @@ namespace myPascal
                     _buffer = currSym;
                     identifier.Value += _buffer;
                     identifier.SourceCode += _buffer;
+                    _currentSymbolNumber++;
+                }
                 if (Pascal.Keywords.Contains(identifier.SourceCode.ToLower()))
                 {
                     _currentLexem = new Keyword(identifier);
@@ -112,6 +156,9 @@ namespace myPascal
 
                 _currentLexem = identifier;
             }
+
+            _buffer = currSym;
+            _currentSymbolNumber++;
         }
 
         public string GetLexemName()
