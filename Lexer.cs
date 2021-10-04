@@ -14,12 +14,14 @@ namespace myPascal
         private int _currentStringNumber;
         private int _currentSymbolNumber;
         private AbstractLexem _currentLexem;
+        private string _filePath;
         public Lexer(string filePath)
         {
             _stream = new StreamReader(filePath);
             _currentStringNumber = 1;
             _currentSymbolNumber = 0;
             _buffer = ' ';
+            _filePath = filePath;
         }
 
         public List<AbstractLexem> GetAllLexems()
@@ -36,6 +38,10 @@ namespace myPascal
                 AbstractLexem comment = new AbstractLexem(_currentStringNumber, _currentSymbolNumber);
                 while ((sym = (char) _stream.Read()) != '}') 
                 {
+                    if (_stream.EndOfStream)
+                    {
+                        throw new Exception($"{_filePath}{comment.Coordinates} Fatal: Detected unclosed comment");
+                    }
                     if (sym == '\n')
                     {
                         _currentSymbolNumber = 1;
