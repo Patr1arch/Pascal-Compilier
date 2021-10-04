@@ -2,7 +2,11 @@
 {
     public class AbstractIdentifier : AbstractLexem
     {
-        protected AbstractIdentifier(int strNum, int symNum) : base(strNum, symNum)
+        public AbstractIdentifier(int strNum, int symNum) : base(strNum, symNum)
+        {
+        }
+        
+        public AbstractIdentifier(AbstractLexem lexem) : base(lexem)
         {
         }
     }

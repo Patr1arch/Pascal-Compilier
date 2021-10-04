@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using myPascal.Lexems;
@@ -33,7 +33,7 @@ namespace myPascal
             
             if (char.IsLetter(currSym))
             {
-                Identifier identifier = new Identifier(_currentStringNumber, _currentSymbolNumber);
+                AbstractIdentifier identifier = new AbstractIdentifier(_currentStringNumber, _currentSymbolNumber);
                 identifier.Value += currSym;
                 identifier.SourceCode += currSym;
                 // invariant: we get lexem and the next symbol
@@ -42,7 +42,15 @@ namespace myPascal
                     _buffer = currSym;
                     identifier.Value += _buffer;
                     identifier.SourceCode += _buffer;
+                if (Pascal.Keywords.Contains(identifier.SourceCode.ToLower()))
+                {
+                    _currentLexem = new Keyword(identifier);
                 }
+                else
+                {
+                    _currentLexem = new Identifier(identifier);
+                }
+            }
 
                 _currentLexem = identifier;
             }

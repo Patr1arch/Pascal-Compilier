@@ -1,4 +1,4 @@
-namespace myPascal.Lexems
+﻿namespace myPascal.Lexems
 {
     public class AbstractLexem
     {
@@ -8,6 +8,13 @@ namespace myPascal.Lexems
         public AbstractLexem(int strNum, int symNum)
         {
             Coordinates = (strNum, symNum);
+        }
+        
+        public AbstractLexem(AbstractLexem identifier)
+        {
+            Coordinates = identifier.Coordinates;
+            Value = identifier.Value;
+            SourceCode = identifier.SourceCode;
         }
 
         public override string ToString()
