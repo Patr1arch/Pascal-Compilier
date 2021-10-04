@@ -199,3 +199,78 @@ namespace LexerTestProject
             
         }
         
+        [Test]
+        public void Example()
+        {
+            Lexer testLexer = new Lexer("TestPascalFiles\\Example.pas");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 5:1\tType: " +
+                                                      "Keyword\tSource Code: program\tValue: \"program\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 5:9\tType: " +
+                                                      "Identifier\tSource Code: Hello\tValue: \"Hello\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 5:14\tType: " +
+                                                      "Separator\tSource Code: ;\tValue: \";\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 6:1\tType: " +
+                                                      "Keyword\tSource Code: var\tValue: \"var\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 6:5\tType: " +
+                                                      "Identifier\tSource Code: a\tValue: \"a\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 6:6\tType: " +
+                                                      "Separator\tSource Code: ,\tValue: \",\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 6:7\tType: " +
+                                                      "Identifier\tSource Code: b\tValue: \"b\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 6:8\tType: " +
+                                                      "Separator\tSource Code: ,\tValue: \",\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 6:9\tType: " +
+                                                      "Identifier\tSource Code: c\tValue: \"c\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 6:10\tType: " +
+                                                      "Separator\tSource Code: :\tValue: \":\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 6:11\tType: " +
+                                                      "Keyword\tSource Code: integer\tValue: \"integer\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 6:18\tType: " +
+                                                      "Separator\tSource Code: ;\tValue: \";\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 8:5\tType: " +
+                                                      "Identifier\tSource Code: f\tValue: \"f\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 8:7\tType: " +
+                                                      "Separator\tSource Code: :\tValue: \":\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 8:9\tType: " +
+                                                      "Keyword\tSource Code: real\tValue: \"real\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 8:13\tType: " +
+                                                      "Separator\tSource Code: ;\tValue: \";\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 9:1\tType: " +
+                                                      "Keyword\tSource Code: begin\tValue: \"begin\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 10:3\tType: " +
+                                                      "Identifier\tSource Code: writeln\tValue: \"writeln\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 10:10\tType: " +
+                                                      "Separator\tSource Code: (\tValue: \"(\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 10:11\tType: " +
+                                                      "Identifier\tSource Code: a\tValue: \"a\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 10:12\tType: " +
+                                                      "Separator\tSource Code: )\tValue: \")\"");
+            testLexer.NextLexem();
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 11:1\tType: " +
+                                                      "Keyword\tSource Code: end.\tValue: \"end.\"");
+            
+        }
+        
+    }
