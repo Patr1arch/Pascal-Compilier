@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using myPascal.Lexems;
 
 namespace myPascal
@@ -17,6 +18,7 @@ namespace myPascal
             _stream = new StreamReader(filePath);
             _currentStringNumber = 1;
             _currentSymbolNumber = 0;
+            _buffer = ' ';
         }
 
         public List<AbstractLexem> GetAllLexems()
@@ -25,9 +27,29 @@ namespace myPascal
             return res;
         }
 
-        public void NextLexem() 
+        private char CheckForWhitespaces(char sym)
         {
-            char currSym = (char) _stream.Read();
+            while (char.IsWhiteSpace(sym))
+            {
+                if (sym == '\n')
+                {
+                    _currentSymbolNumber = 1;
+                    _currentStringNumber++;
+                }
+                else
+                    _currentSymbolNumber++;
+
+                sym = (char) _stream.Read();
+                _buffer = sym;
+            }
+
+            return sym;
+        }
+
+        public void NextLexem()
+        {
+            // EOF -- will be fine, 'cause 56635 is not valid symbol in unicode table 
+            char currSym = CheckForWhitespaces(_buffer);
             _buffer = currSym;
             _currentSymbolNumber++;
             

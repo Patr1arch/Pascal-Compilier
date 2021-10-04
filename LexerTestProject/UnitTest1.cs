@@ -59,5 +59,18 @@ namespace LexerTestProject
         }
 
         [Test]
-    }
+        public void WhiteSpaceChecker()
+        {
+            Lexer testLexer = new Lexer("TestPascalFiles\\Whitespaces.pas");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 3:1\tType: " +
+                                                      "Keyword\tSource Code: program\tValue: \"program\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 3:12\tType: " +
+                                                      "Identifier\tSource Code: Hello\tValue: \"Hello\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 6:2\tType: " +
+                                                      "Identifier\tSource Code: World\tValue: \"World\"");
+        }
+
 }
