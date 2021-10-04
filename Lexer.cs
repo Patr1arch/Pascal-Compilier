@@ -153,6 +153,21 @@ namespace myPascal
                     _currentLexem = new Identifier(identifier);
                 }
             }
+            else if (Pascal.Separators.Contains(currSym))
+            {
+                Separator separator = new Separator(_currentStringNumber, _currentSymbolNumber);
+                _buffer = currSym;
+                separator.Value += _buffer;
+                separator.SourceCode += _buffer;
+                if ((currSym = (char) _stream.Read()) == '=' && _buffer == ':')
+                {
+                    _currentLexem = new Operator(separator);
+                }
+                else
+                {
+                    _currentLexem = separator;
+                }
+            }
 
                 _currentLexem = identifier;
             }

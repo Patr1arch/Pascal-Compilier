@@ -148,3 +148,35 @@ namespace LexerTestProject
                                                       "Identifier\tSource Code: Hello\tValue: \"Hello\"");
         }
         
+        [Test]
+        public void Separators()
+        {
+            Lexer testLexer = new Lexer("TestPascalFiles\\Separators.pas");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:1\tType: " +
+                                                      "Identifier\tSource Code: a\tValue: \"a\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:2\tType: " +
+                                                      "Separator\tSource Code: [\tValue: \"[\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:3\tType: " +
+                                                      "IntegerLiteral\tSource Code: 5\tValue: \"5\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:4\tType: " +
+                                                      "Separator\tSource Code: ]\tValue: \"]\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:5\tType: " +
+                                                      "Separator\tSource Code: ;\tValue: \";\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 2:1\tType: " +
+                                                      "Separator\tSource Code: (\tValue: \"(\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 2:2\tType: " +
+                                                      "IntegerLiteral\tSource Code: 42\tValue: \"42\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 2:4\tType: " +
+                                                      "Separator\tSource Code: )\tValue: \")\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 2:5\tType: " +
+                                                      "Separator\tSource Code: ;\tValue: \";\"");
+        }
