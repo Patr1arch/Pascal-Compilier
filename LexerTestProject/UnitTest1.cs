@@ -26,12 +26,38 @@ namespace LexerTestProject
         }
 
         [Test]
-        public void Test2()
+        public void SymIdent()
         {
-            Lexer testLexer = new Lexer("firstSym.pas");
+            Lexer testLexer = new Lexer("TestPascalFiles\\firstSymIdent.pas");
             testLexer.NextLexem();
             Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:1\tType: " +
                                                       "Identifier\tSource Code: a\tValue: \"a\"");
         }
+
+        [Test]
+        public void Keyword()
+        {
+            Lexer testLexer = new Lexer("TestPascalFiles\\Keyword.pas");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:1\tType: " +
+                                                      "Keyword\tSource Code: and\tValue: \"and\"");
+        }
+        
+        [Test]
+        public void KeywordAndIdent()
+        {
+            Lexer testLexer = new Lexer("TestPascalFiles\\KeywordAndIdent.pas");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:1\tType: " +
+                                                      "Keyword\tSource Code: program\tValue: \"program\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:9\tType: " +
+                                                      "Identifier\tSource Code: Hello\tValue: \"Hello\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:9\tType: " +
+                                                      "Identifier\tSource Code: Hello\tValue: \"Hello\"");
+        }
+
+        [Test]
     }
 }

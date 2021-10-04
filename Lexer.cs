@@ -9,7 +9,7 @@ namespace myPascal
     {
         private readonly StreamReader _stream; // File?
         private char _buffer;
-        private readonly int _currentStringNumber;
+        private int _currentStringNumber;
         private int _currentSymbolNumber;
         private AbstractLexem _currentLexem;
         public Lexer(string filePath)
