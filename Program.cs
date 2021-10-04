@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using myPascal.Lexems;
 
 namespace myPascal
 {
@@ -14,14 +15,13 @@ namespace myPascal
             switch (args[0])
             {
                 case "-l":
-                    // TODO: Start Lexer session
-                    if (File.Exists(Environment.CurrentDirectory + "/" + args[1]))
+                    if (File.Exists(Environment.CurrentDirectory + "\\" + args[1]))
                     {
                         return (0, args[1]);
                     }
                     else
                     {
-                        Console.WriteLine("Error! File not found.");
+                        Console.WriteLine($"{args[1]} Fatal: File not found.");
                         return (-1, "");
                     }
                 default:
@@ -31,7 +31,7 @@ namespace myPascal
                     }
                     else
                     {
-                        Console.WriteLine("Error! File not found.");
+                        Console.WriteLine($"{args[0]} Fatal: File not found.");
                         return (-1, "");
                     }
             }
@@ -40,13 +40,25 @@ namespace myPascal
         static void Main(string[] args)
         {
             var obj = ProceedArguments(args.ToList());
-            Lexer lexer = new Lexer(obj.Item2);
             switch (obj.Item1)
             {
                 case 0:
-                    
-                    break;
                 case 1:
+                    Lexer lexer = new Lexer(obj.Item2);
+                    try
+                    {
+                        var res = lexer.GetAllLexems();
+                        foreach (var el in res)
+                        {
+                            Console.WriteLine(el.ToString());
+                        }
+                        
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        throw;
+                    }
                     break;
             }
         }
