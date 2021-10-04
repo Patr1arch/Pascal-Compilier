@@ -168,8 +168,23 @@ namespace myPascal
                     _currentLexem = separator;
                 }
             }
+            else if (Pascal.Operators.Contains(currSym.ToString()))
+            {
+                Operator @operator = new Operator(_currentStringNumber, _currentSymbolNumber);
+                _buffer = currSym;
+                @operator.Value += _buffer;
+                @operator.SourceCode += _buffer;
+                
+                if (Pascal.Operators.Contains((currSym = (char) _stream.Read()).ToString()))
+                {
+                    @operator.Value += _buffer;
+                    @operator.SourceCode += _buffer;
+                }
 
-                _currentLexem = identifier;
+                _currentLexem = @operator;
+                
+                // To satisfy common invarant
+                currSym = (char) _stream.Read();
             }
 
             _buffer = currSym;

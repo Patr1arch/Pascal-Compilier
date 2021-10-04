@@ -180,3 +180,22 @@ namespace LexerTestProject
             Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 2:5\tType: " +
                                                       "Separator\tSource Code: ;\tValue: \";\"");
         }
+        [Test]
+        public void Operators()
+        {
+            Lexer testLexer = new Lexer("TestPascalFiles\\Operators.pas");
+            testLexer.NextLexem();
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:3\tType: " +
+                                                      "Operator\tSource Code: -\tValue: \"-\"");
+            testLexer.SkipLexems(3);
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 2:3\tType: " +
+                                                      "Operator\tSource Code: +\tValue: \"+\"");
+            testLexer.SkipLexems(3);
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 3:3\tType: " +
+                                                      "Operator\tSource Code: <<\tValue: \"<<\"");
+            
+        }
+        
