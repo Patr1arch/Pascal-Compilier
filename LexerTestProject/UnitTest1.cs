@@ -347,5 +347,16 @@ namespace LexerTestProject
             Assert.AreEqual(e.Message,
                 "TestPascalFiles\\StringLiterals.pas(10, 11) Fatal: String exceeds line");
         }
+        
+        [Test]
+        public void SliceOperator()
+        {
+            Lexer testLexer = new Lexer("TestPascalFiles\\SliceOperator.pas");
+            testLexer.SkipLexems(20);
+            testLexer.NextLexem();
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 9:18\tType: " +
+                                                      "Operator\tSource Code: ..\tValue: \"..\"");
+        }
     }
 }

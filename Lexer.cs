@@ -135,7 +135,11 @@ namespace myPascal
                 {
                     _buffer = currSym;
                     if (currSym.IsFloat() && detectedType != Pascal.NumericTypes.Hex)
+                    {
+                        if ((char) _stream.Peek() == '.') // detected number and slice operator ..
+                            break;
                         detectedType = Pascal.NumericTypes.Real;
+                    }
                     literal.SourceCode += _buffer;
                     _currentSymbolNumber++;
                 }
@@ -247,14 +251,14 @@ namespace myPascal
                     _currentLexem = separator;
                 }
             }
-            else if (Pascal.Operators.Contains(currSym.ToString()))
+            else if (Pascal.Operators.Contains(currSym.ToString()) || currSym == '.')
             {
                 Operator @operator = new Operator(_currentStringNumber, _currentSymbolNumber);
                 _buffer = currSym;
                 @operator.Value += _buffer;
                 @operator.SourceCode += _buffer;
                 
-                if (Pascal.Operators.Contains((currSym = (char) _stream.Read()).ToString()))
+                if (Pascal.Operators.Contains((currSym = (char) _stream.Read()).ToString()) || currSym == '.')
                 {
                     @operator.Value += _buffer;
                     @operator.SourceCode += _buffer;
