@@ -199,6 +199,34 @@ namespace myPascal
                     _currentLexem = new Identifier(identifier);
                 }
             }
+            else if (currSym == '\'')
+            {
+                StringLiteral stringLiteral = new StringLiteral(_currentStringNumber, _currentSymbolNumber);
+                stringLiteral.SourceCode += currSym; // TODO Redefine setters for SourceCode/Value except Integer and Real
+                stringLiteral.Value += currSym;
+                // invariant: we get lexem/word and next symbol
+                while ((currSym = (char) _stream.Read()) != '\'')
+                {
+                    if (_stream.EndOfStream || currSym == '\n')
+                    {
+                        throw new Exception($"{_filePath}{stringLiteral.Coordinates} " +
+                                            $"Fatal: String exceeds line");
+                    }
+                    _buffer = currSym;
+                    stringLiteral.Value += _buffer;
+                    stringLiteral.SourceCode += _buffer;
+                    _currentSymbolNumber++;
+                }
+                
+                stringLiteral.Value += currSym;
+                stringLiteral.SourceCode += currSym;
+                _currentSymbolNumber++;
+                    
+                // To satisfy common invariant
+                currSym = (char) _stream.Read(); // TODO: Optimize this calls if possible
+
+                _currentLexem = stringLiteral;
+            }
             else if (Pascal.Separators.Contains(currSym))
             {
                 Separator separator = new Separator(_currentStringNumber, _currentSymbolNumber);

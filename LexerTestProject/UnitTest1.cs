@@ -306,14 +306,11 @@ namespace LexerTestProject
         {
             Lexer testLexer = new Lexer("TestPascalFiles\\GetAllLexems.pas");
             var res = testLexer.GetAllLexems();
+            // TODO: Add more source code to verify this test method
             Assert.AreEqual(res[0].ToString(), "Coordinates: 1:1\tType: " +
-                                                      "Separator\tSource Code: \"\tValue: \"\"\"");
-            Assert.AreEqual(res[1].ToString(), "Coordinates: 1:2\tType: " +
-                                    "Keyword\tSource Code: string\tValue: \"string\"");
-            Assert.AreEqual(res[2].ToString(), "Coordinates: 1:8\tType: " +
-                                    "Separator\tSource Code: \"\tValue: \"\"\"");
-            Assert.AreEqual(res[3].ToString(), "Coordinates: 1:9\tType: " +
-                                    "Separator\tSource Code: ;\tValue: \";\"");
+                                                       "StringLiteral\tSource Code: \'string\'\tValue: \"\'string\'\"");
+            Assert.AreEqual(res[1].ToString(), "Coordinates: 1:9\tType: " +
+                                               "Separator\tSource Code: ;\tValue: \";\"");
         }
         
         [Test]
@@ -323,6 +320,32 @@ namespace LexerTestProject
             Exception e = Assert.Throws<Exception>(() => testLexer.NextLexem());
             Assert.AreEqual(e.Message,
                 "TestPascalFiles\\InvalidCharInComm.pas(2, 5) Fatal: Detected invalid character");
+        }
+        
+        [Test]
+        public void StringLiterals()
+        {
+            Lexer testLexer = new Lexer("TestPascalFiles\\StringLiterals.pas");
+            testLexer.SkipLexems(17);
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 7:11\tType: " +
+                "StringLiteral\tSource Code: \'a\'\tValue: \"\'a\'\"");
+            testLexer.SkipLexems(3);
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 8:10\tType: " + 
+                                                      "StringLiteral\tSource Code: \'" +
+                                                      "A tabulator character: ??? is easy to embed and its not integer" +
+                                                      "\'\tValue: \"\'" +
+                                                      "A tabulator character: ??? is easy to embed and its not integer" +
+                                                      "\'\"");
+            testLexer.SkipLexems(3);
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 9:11\tType: " +
+                                                      "StringLiteral\tSource Code: \'begin\'\tValue: \"\'begin\'\"");
+            testLexer.SkipLexems(3);
+            Exception e = Assert.Throws<Exception>(() => testLexer.NextLexem());
+            Assert.AreEqual(e.Message,
+                "TestPascalFiles\\StringLiterals.pas(10, 11) Fatal: String exceeds line");
         }
     }
 }

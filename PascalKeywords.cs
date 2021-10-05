@@ -19,8 +19,7 @@ namespace myPascal
             '(',
             ')',
             ':',
-            ',',
-            '"'
+            ','
         };
         
         public static List<string> Operators = new List<string>

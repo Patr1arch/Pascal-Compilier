@@ -57,7 +57,7 @@ namespace myPascal
                     catch (Exception e)
                     {
                         Console.WriteLine(e.Message);
-                        throw;
+                        Console.WriteLine("Fatal: Compilation aborted");
                     }
                     break;
             }
