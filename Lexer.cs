@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -55,9 +55,9 @@ namespace myPascal
         private bool CheckForComment(char sym)
         {
             sym = CheckForWhitespaces(sym);
+            AbstractLexem comment = new AbstractLexem(_currentStringNumber, _currentSymbolNumber);
             if (sym == '{')
             {
-                AbstractLexem comment = new AbstractLexem(_currentStringNumber, _currentSymbolNumber);
                 while ((sym = (char) _stream.Read()) != '}') 
                 {
                     if (_stream.EndOfStream)
@@ -207,6 +207,9 @@ namespace myPascal
                 separator.SourceCode += _buffer;
                 if ((currSym = (char) _stream.Read()) == '=' && _buffer == ':')
                 {
+                    separator.Value += currSym;
+                    separator.SourceCode += currSym;
+                    _currentSymbolNumber++; // Operator of two symbols
                     _currentLexem = new Operator(separator);
                     // To satisfy common invarant
                     currSym = (char) _stream.Read();
@@ -227,6 +230,7 @@ namespace myPascal
                 {
                     @operator.Value += _buffer;
                     @operator.SourceCode += _buffer;
+                    _currentSymbolNumber++; // Operator of two symbols
                 }
 
                 _currentLexem = @operator;

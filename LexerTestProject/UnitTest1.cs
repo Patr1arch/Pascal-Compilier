@@ -197,6 +197,14 @@ namespace LexerTestProject
             Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 3:3\tType: " +
                                                       "Operator\tSource Code: <<\tValue: \"<<\"");
             
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 3:6\tType: " +
+                                                      "Identifier\tSource Code: b\tValue: \"b\"");
+            
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 3:7\tType: " +
+                                                      "Separator\tSource Code: ;\tValue: \";\"");
+            
         }
         
         [Test]
@@ -286,9 +294,11 @@ namespace LexerTestProject
         public void ExcLongString()
         {
             Lexer testLexer = new Lexer("TestPascalFiles\\ExcLongString.pas");
-            testLexer.SkipLexems(11);
+            testLexer.SkipLexems(10);
+            testLexer.NextLexem();
             Exception e = Assert.Throws<Exception>(() => testLexer.NextLexem());
-            // Assert.AreEqual(e.Message, "TestPascalFiles\\ExsUnclosedComment.pas(2, 5) Fatal: Detected unclosed comment");
+            Assert.AreEqual(e.Message, "TestPascalFiles\\ExcLongString.pas(4, 5) Fatal: Length of string " +
+                                       "more than 255");
         }
 
         [Test]
