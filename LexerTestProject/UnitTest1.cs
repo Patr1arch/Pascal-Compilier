@@ -305,5 +305,14 @@ namespace LexerTestProject
             Assert.AreEqual(res[3].ToString(), "Coordinates: 1:9\tType: " +
                                     "Separator\tSource Code: ;\tValue: \";\"");
         }
+        
+        [Test]
+        public void InvalidCharInComm()
+        {
+            Lexer testLexer = new Lexer("TestPascalFiles\\InvalidCharInComm.pas");
+            Exception e = Assert.Throws<Exception>(() => testLexer.NextLexem());
+            Assert.AreEqual(e.Message,
+                "TestPascalFiles\\InvalidCharInComm.pas(2, 5) Fatal: Detected invalid character");
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -120,7 +120,10 @@ namespace myPascal
                 currSym = CheckForWhitespaces((char) _stream.Read());
             }
             
-
+            if (currSym == '}')
+                throw new Exception($"{_filePath}{(_currentStringNumber, _currentSymbolNumber)}" +
+                                    $" Fatal: Detected invalid character");
+            
             if (char.IsDigit(currSym) || currSym == Pascal.BinaryIdentifier || currSym == Pascal.HexIdentifier)
             {
                 AbstractLiteral literal = new AbstractLiteral(_currentStringNumber, _currentSymbolNumber);
