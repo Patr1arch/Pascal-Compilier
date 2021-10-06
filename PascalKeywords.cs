@@ -72,7 +72,6 @@ namespace myPascal
                 "uint64",
                 "until",
                 "while",
-                "while",
                 "word",
                 "xor",
                 "program",
@@ -81,7 +80,9 @@ namespace myPascal
                 "of",
                 "var",
                 "begin",
-                "string"
+                "string",
+                "procedure",
+                "function"
             };
     }
 }

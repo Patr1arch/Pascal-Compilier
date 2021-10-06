@@ -358,5 +358,31 @@ namespace LexerTestProject
             Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 9:18\tType: " +
                                                       "Operator\tSource Code: ..\tValue: \"..\"");
         }
+        
+        [Test]
+        public void FunctionsAndProcudures()
+        {
+            Lexer testLexer = new Lexer("TestPascalFiles\\FunctionsAndProcudures.pas");
+            testLexer.SkipLexems(8);
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 3:1\tType: " +
+                                                      "Keyword\tSource Code: procedure\tValue: \"procedure\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 3:11\tType: " +
+                                                      "Identifier\tSource Code: check\tValue: \"check\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 3:16\tType: " +
+                                                      "Separator\tSource Code: (\tValue: \"(\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 3:17\tType: " +
+                                                      "Keyword\tSource Code: var\tValue: \"var\"");
+            testLexer.SkipLexems(13);
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 7:1\tType: " +
+                                                      "Keyword\tSource Code: function\tValue: \"function\"");
+            testLexer = new Lexer("TestPascalFiles\\FunctionsAndProcudures.pas");
+            var a = testLexer.GetAllLexems();
+
+        }
     }
 }
