@@ -11,6 +11,22 @@ namespace myPascal
         
         public static char HexIdentifier = '$';
 
+        public static string opMinus = "-";
+
+        public static string opPlus = "+";
+
+        public static string opMult = "*";
+
+        public static string opIntDiv = "div";
+
+        public static string opMod = "mod";
+
+        public static string opDiv = "/";
+
+        public static string lexLParent = "(";
+        
+        public static string lexRParent = ")";
+
         public static List<char> Separators = new List<char>
         {
             '[',
@@ -31,10 +47,10 @@ namespace myPascal
             ">",
             "<=",
             ">=",
-            "+",
-            "-",
-            "*",
-            "/",
+            opPlus, 
+            opMinus,
+            opMult,
+            opDiv,
             "<<",
             ">>"
         };
@@ -47,7 +63,7 @@ namespace myPascal
                 "break",
                 "byte",
                 "continue",
-                "div",
+                opDiv,
                 "do",
                 "double",
                 "else",
@@ -57,7 +73,7 @@ namespace myPascal
                 "int64",
                 "longint",
                 "longword",
-                "mod",
+                opMod,
                 "not",
                 "or",
                 "qword",

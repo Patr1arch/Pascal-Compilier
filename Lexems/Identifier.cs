@@ -8,5 +8,8 @@
 
         public Identifier(AbstractIdentifier identifier) : 
             base(identifier) {}
+        
+        public Identifier(AbstractLexem lexem) : 
+            base(lexem) {}
     }
 }

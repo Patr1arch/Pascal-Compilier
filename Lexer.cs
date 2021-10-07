@@ -15,6 +15,8 @@ namespace myPascal
         private int _currentSymbolNumber;
         private AbstractLexem _currentLexem;
         private string _filePath;
+
+        public string FilePath => _filePath;
         public Lexer(string filePath)
         {
             _stream = new StreamReader(filePath);
@@ -144,7 +146,7 @@ namespace myPascal
                     _currentSymbolNumber++;
                 }
 
-                if (detectedType == Pascal.NumericTypes.Binary)
+                if (detectedType == Pascal.NumericTypes.Binary) // TODO: refactor to switch statement
                 {
                     literal.Value = Convert.ToInt64(literal.SourceCode.Substring(1), 2).ToString();
                 }
@@ -278,6 +280,17 @@ namespace myPascal
         public string GetLexemName()
         {
             return _currentLexem.ToString();
+        }
+        
+        public AbstractLexem GetNextLexem()
+        {
+            NextLexem();
+            return _currentLexem;
+        }
+        
+        public AbstractLexem GetLexem()
+        {
+            return _currentLexem;
         }
     }
 }

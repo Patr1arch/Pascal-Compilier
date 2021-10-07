@@ -6,5 +6,8 @@
         
         public IntegerLiteral(AbstractLiteral literal) : 
             base(literal) {}
+        
+        public IntegerLiteral(AbstractLexem lexem) : 
+            base(lexem) {}
     }
 }
