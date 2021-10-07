@@ -18,7 +18,7 @@ namespace LexerTestProject
         public void StartLexer()
         {
             Assert.AreEqual(Program.ProceedArguments(new List<string>(){"-l", "TestPascalFiles\\test.pas"}), (0, "TestPascalFiles\\test.pas"));
-            Assert.AreEqual(Program.ProceedArguments(new List<string>(){"TestPascalFiles\\test.pas"}), (1, "TestPascalFiles\\test.pas"));
+            Assert.AreEqual(Program.ProceedArguments(new List<string>(){"TestPascalFiles\\test.pas"}), (2, "TestPascalFiles\\test.pas"));
             Assert.AreEqual(Program.ProceedArguments(new List<string>(){"-l", "TestPascalFiles\\testtrash.pas"}), (-1, ""));
             Assert.AreEqual(Program.ProceedArguments(new List<string>(){"TestPascalFiles\\testtrash.pas"}), (-1, ""));
             // TODO: Handle this problem if you'll have free time
@@ -383,6 +383,26 @@ namespace LexerTestProject
             testLexer = new Lexer("TestPascalFiles\\FunctionsAndProcudures.pas");
             var a = testLexer.GetAllLexems();
 
+        }
+
+
+        public class ParserTest
+        {
+            [Test]
+            public void SimpleEquation()
+            {
+                Lexer lex = new Lexer("TestPascalFiles\\FirstLexems.pas");
+                Parser parser = new Parser(lex);
+                Assert.AreEqual(parser.ParseExpr().Print(), "+\n\t1\n\t*\n\t\t2\n\t\ta\n");
+            }
+            
+            [Test]
+            public void Parents()
+            {
+                Lexer lex = new Lexer("TestPascalFiles\\Parents.pas");
+                Parser parser = new Parser(lex);
+                Assert.AreEqual(parser.ParseExpr().Print(), "+\n\t1\n\t+\n\t\t2\n\t\t3\n");
+            }
         }
     }
 }

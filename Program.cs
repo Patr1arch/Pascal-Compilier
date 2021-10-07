@@ -14,10 +14,11 @@ namespace myPascal
         {
             switch (args[0])
             {
+                case "-p":
                 case "-l":
                     if (File.Exists(Environment.CurrentDirectory + "\\" + args[1]))
                     {
-                        return (0, args[1]);
+                        return (args[0] == "-l" ? 0 : 1, args[1]);
                     }
                     else
                     {
@@ -27,7 +28,7 @@ namespace myPascal
                 default:
                     if (File.Exists(Environment.CurrentDirectory + "/" + args[0]))
                     {
-                        return (1, args[0]);
+                        return (2, args[0]);
                     }
                     else
                     {
@@ -40,11 +41,12 @@ namespace myPascal
         static void Main(string[] args)
         {
             var obj = ProceedArguments(args.ToList());
+            Lexer lexer = new Lexer(obj.Item2);
+            Parser parser = new Parser(lexer);
             switch (obj.Item1)
             {
                 case 0:
-                case 1:
-                    Lexer lexer = new Lexer(obj.Item2);
+                case 2:
                     try
                     {
                         var res = lexer.GetAllLexems();
@@ -53,6 +55,18 @@ namespace myPascal
                             Console.WriteLine(el.ToString());
                         }
                         
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        Console.WriteLine("Fatal: Compilation aborted");
+                    }
+                    break;
+                case 1:
+                    try
+                    {
+                        var res = parser.ParseExpr();
+                        Console.Write(res.Print());
                     }
                     catch (Exception e)
                     {
