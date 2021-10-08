@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using myPascal.Lexems;
 using myPascal.Nodes;
 
@@ -60,9 +60,10 @@ namespace myPascal
             if (l.Value == Pascal.lexLParent)
             {
                 Node e = ParseExpr();
-                if (_lex.GetLexem().Value != Pascal.lexRParent)
+                if (_lex.GetLexem().Value != Pascal.lexRParent) // Require
                 {
-                    throw new Exception(_lex.GetLexemName());
+                    throw new Exception($"{_lex.FilePath}{l.Coordinates} " +
+                                        $"Fatal: Syntax error, \"{Pascal.lexRParent}\" expected but {_lex.GetLexem().Value} found");
                 }
                 _lex.NextLexem();
 

@@ -449,7 +449,7 @@ namespace LexerTestProject
                     new StreamReader("TestPascalFiles\\ParserOutput\\HardParentsOut.txt")
                         .ReadToEnd().Replace("\r\n", "\n")); // For Windows
             }
-            
+
             [Test]
             public void ArithmeticExample()
             {
@@ -457,11 +457,21 @@ namespace LexerTestProject
                 Parser parser = new Parser(lex);
                 var deb = parser.ParseExpr().Print();
                 Debug.WriteLine(deb);
-                Assert.AreEqual(deb, 
+                Assert.AreEqual(deb,
                     new StreamReader("TestPascalFiles\\ParserOutput\\ArithmeticExampleOut.txt")
                         .ReadToEnd().Replace("\r\n", "\n")); // For Windows
             }
             
+            [Test]
+            public void ProblemWithRParent()
+            {
+                Lexer lex = new Lexer("TestPascalFiles\\ProblemWithRParent.pas");
+                Parser parser = new Parser(lex);
+                Exception e = Assert.Throws<Exception>(() => parser.ParseExpr());
+                Assert.AreEqual(e.Message, "TestPascalFiles\\ProblemWithRParent.pas(1, 1) " +
+                                           $"Fatal: Syntax error, \"{Pascal.lexRParent}\" expected but 2 found");
+            }
+
         }
     }
 }
