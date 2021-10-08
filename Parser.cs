@@ -33,7 +33,7 @@ namespace myPascal
         {
             Node left = ParseFactor();
             AbstractLexem op = _lex.GetLexem();
-            if (op.Value == Pascal.opMult || op.Value == Pascal.opDiv || op.Value == Pascal.opIntDiv)
+            if (op.Value == Pascal.opMult || op.Value == Pascal.opDiv || op.Value == Pascal.opIntDiv || op.Value == Pascal.opMod)
             {
                 _lex.NextLexem();
                 Node right = ParseTerm();
@@ -60,7 +60,6 @@ namespace myPascal
             if (l.Value == Pascal.lexLParent)
             {
                 Node e = ParseExpr();
-                _lex.NextLexem();
                 if (_lex.GetLexem().Value != Pascal.lexRParent)
                 {
                     throw new Exception(_lex.GetLexemName());

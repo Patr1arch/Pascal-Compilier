@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using NUnit.Framework;
 using myPascal;
 
@@ -394,8 +396,10 @@ namespace LexerTestProject
                 Lexer lex = new Lexer("TestPascalFiles\\FirstLexems.pas");
                 Parser parser = new Parser(lex);
                 var deb = parser.ParseExpr().Print();
-                Console.WriteLine(deb);
-                Assert.AreEqual(deb, "+\n\t1\n\t*\n\t\t2\n\t\ta\n");
+                Debug.WriteLine(deb);
+                Assert.AreEqual(deb, 
+                    new StreamReader("TestPascalFiles\\ParserOutput\\SimpleEquationOut.txt")
+                        .ReadToEnd().Replace("\r\n", "\n")); // For Windows
             }
             
             [Test]
@@ -404,8 +408,10 @@ namespace LexerTestProject
                 Lexer lex = new Lexer("TestPascalFiles\\Parents.pas");
                 Parser parser = new Parser(lex);
                 var deb = parser.ParseExpr().Print();
-                Console.WriteLine(deb);
-                Assert.AreEqual(deb, "+\n\t1\n\t+\n\t\t2\n\t\t3\n");
+                Debug.WriteLine(deb);
+                Assert.AreEqual(deb, 
+                    new StreamReader("TestPascalFiles\\ParserOutput\\ParentsOut.txt")
+                        .ReadToEnd().Replace("\r\n", "\n")); // For Windows
             }
             
             [Test]
@@ -414,9 +420,48 @@ namespace LexerTestProject
                 Lexer lex = new Lexer("TestPascalFiles\\ClassicSub.pas");
                 Parser parser = new Parser(lex);
                 var deb = parser.ParseExpr().Print();
-                Console.WriteLine(deb);
-                Assert.AreEqual(deb, "-\n\t-\n\t\t1\n\t\t2\n\t3\n");
+                Debug.WriteLine(deb);
+                Assert.AreEqual(deb, 
+                    new StreamReader("TestPascalFiles\\ParserOutput\\SubstractionOut.txt")
+                        .ReadToEnd().Replace("\r\n", "\n")); // For Windows
             }
+            
+            [Test]
+            public void PriorityParents()
+            {
+                Lexer lex = new Lexer("TestPascalFiles\\PriorityParents.pas");
+                Parser parser = new Parser(lex);
+                var deb = parser.ParseExpr().Print();
+                Debug.WriteLine(deb);
+                Assert.AreEqual(deb, 
+                    new StreamReader("TestPascalFiles\\ParserOutput\\PriorityParentsOut.txt")
+                        .ReadToEnd().Replace("\r\n", "\n")); // For Windows
+            }
+            
+            [Test]
+            public void HardParents()
+            {
+                Lexer lex = new Lexer("TestPascalFiles\\HardParents.pas");
+                Parser parser = new Parser(lex);
+                var deb = parser.ParseExpr().Print();
+                Debug.WriteLine(deb);
+                Assert.AreEqual(deb, 
+                    new StreamReader("TestPascalFiles\\ParserOutput\\HardParentsOut.txt")
+                        .ReadToEnd().Replace("\r\n", "\n")); // For Windows
+            }
+            
+            [Test]
+            public void ArithmeticExample()
+            {
+                Lexer lex = new Lexer("TestPascalFiles\\ArithmeticExample.pas");
+                Parser parser = new Parser(lex);
+                var deb = parser.ParseExpr().Print();
+                Debug.WriteLine(deb);
+                Assert.AreEqual(deb, 
+                    new StreamReader("TestPascalFiles\\ParserOutput\\ArithmeticExampleOut.txt")
+                        .ReadToEnd().Replace("\r\n", "\n")); // For Windows
+            }
+            
         }
     }
 }
