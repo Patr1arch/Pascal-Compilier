@@ -18,11 +18,12 @@ namespace myPascal
         {
             Node left = ParseTerm();
             AbstractLexem op = _lex.GetLexem();
-            if (op.Value == Pascal.opPlus || op.Value == Pascal.opMinus)
+            while (op.Value == Pascal.opPlus || op.Value == Pascal.opMinus)
             {
                 _lex.NextLexem();
-                Node right = ParseExpr();
-                return new BinOpNode(left, op, right);
+                Node right = ParseTerm();
+                left = new BinOpNode(left, op, right);
+                op = _lex.GetLexem();
             }
 
             return left;

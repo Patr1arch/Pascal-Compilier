@@ -393,7 +393,9 @@ namespace LexerTestProject
             {
                 Lexer lex = new Lexer("TestPascalFiles\\FirstLexems.pas");
                 Parser parser = new Parser(lex);
-                Assert.AreEqual(parser.ParseExpr().Print(), "+\n\t1\n\t*\n\t\t2\n\t\ta\n");
+                var deb = parser.ParseExpr().Print();
+                Console.WriteLine(deb);
+                Assert.AreEqual(deb, "+\n\t1\n\t*\n\t\t2\n\t\ta\n");
             }
             
             [Test]
@@ -401,7 +403,19 @@ namespace LexerTestProject
             {
                 Lexer lex = new Lexer("TestPascalFiles\\Parents.pas");
                 Parser parser = new Parser(lex);
-                Assert.AreEqual(parser.ParseExpr().Print(), "+\n\t1\n\t+\n\t\t2\n\t\t3\n");
+                var deb = parser.ParseExpr().Print();
+                Console.WriteLine(deb);
+                Assert.AreEqual(deb, "+\n\t1\n\t+\n\t\t2\n\t\t3\n");
+            }
+            
+            [Test]
+            public void Substraction()
+            {
+                Lexer lex = new Lexer("TestPascalFiles\\ClassicSub.pas");
+                Parser parser = new Parser(lex);
+                var deb = parser.ParseExpr().Print();
+                Console.WriteLine(deb);
+                Assert.AreEqual(deb, "-\n\t-\n\t\t1\n\t\t2\n\t3\n");
             }
         }
     }
