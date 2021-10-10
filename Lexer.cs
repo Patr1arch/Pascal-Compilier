@@ -79,7 +79,7 @@ namespace myPascal
             }
             else if (sym == '/' && (sym = (char) _stream.Read()) == '/') // Cautions
             {
-                while (sym != '\n')
+                while (sym != '\n' && !_stream.EndOfStream)
                 {
                     sym = (char) _stream.Read();
                 }
@@ -132,7 +132,7 @@ namespace myPascal
                 var detectedType = currSym == Pascal.BinaryIdentifier ? Pascal.NumericTypes.Binary :
                     currSym == Pascal.HexIdentifier ? Pascal.NumericTypes.Hex : Pascal.NumericTypes.Decimal;
                 literal.SourceCode += currSym;
-                // invariant: we get lexem and the next symbol, start with 2'd symbol of lexem
+                // invariant: we get lexem and the next symbol, start with 2nd symbol of lexem
                 while ((currSym = (char) _stream.Read()).IsDigitOrHexOrBinaryOrFloat())
                 {
                     _buffer = currSym;
@@ -185,7 +185,7 @@ namespace myPascal
                 if (identifier.SourceCode.Length > 255)
                 {
                     throw new Exception($"{_filePath}{identifier.Coordinates} " +
-                                        $"Fatal: Length of string more than 255");
+                                        $"Fatal: Length of identifier more than 255");
                 }
 
                 if (Pascal.Keywords.Contains(identifier.SourceCode.ToLower()))
@@ -240,6 +240,12 @@ namespace myPascal
                 separator.Value += _buffer;
                 separator.SourceCode += _buffer;
                 if ((currSym = (char) _stream.Read()) == '=' && _buffer == ':')
+                //currSym = (char) _stream.Read();
+                //if (currSym == '=' && _buffer == ':')
+                
+                // if (lexer.NextLexem() == ...)
+                // lexer.NextLexem();
+                // if (lexer.GetLexem() == ...)
                 {
                     separator.Value += currSym;
                     separator.SourceCode += currSym;

@@ -55,6 +55,12 @@ namespace myPascal
             ">>"
         };
         
+        public enum Keyword
+        {
+            And,
+            Or,
+        }
+        //Dictionary<
         public static List<string> Keywords = new List<string>
             {
                 "and",

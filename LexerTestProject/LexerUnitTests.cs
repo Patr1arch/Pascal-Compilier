@@ -42,7 +42,7 @@ namespace LexerTestProject
             Lexer testLexer = new Lexer("TestPascalFiles\\Keyword.pas");
             testLexer.NextLexem();
             Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:1\tType: " +
-                                                      "Keyword\tSource Code: and\tValue: \"and\"");
+                                                        "Keyword\tSource Code: and\tValue: \"and\"");
         }
         
         [Test]
@@ -206,7 +206,13 @@ namespace LexerTestProject
             testLexer.NextLexem();
             Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 3:7\tType: " +
                                                       "Separator\tSource Code: ;\tValue: \";\"");
-            
+
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 4:1\tType: " +
+                                                      "Operator\tSource Code: +\tValue: \"+\""); 
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), 
+                "Coordinates: 4:2   Type: Operator  Source Code: +  Value: \"+\""); 
         }
         
         [Test]
@@ -280,6 +286,13 @@ namespace LexerTestProject
             testLexer.NextLexem();
             Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 11:1\tType: " +
                                                       "Keyword\tSource Code: end.\tValue: \"end.\"");
+            
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 11:1\tType: " +
+                                                      "Keyword\tSource Code: end.\tValue: \"end.\"");
+            
+            
+            
             
         }
         

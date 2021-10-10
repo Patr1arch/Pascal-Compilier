@@ -47,7 +47,7 @@ namespace myPascal
         {
             var l = _lex.GetLexem();
             _lex.NextLexem();
-            if (l.GetType() == typeof(Identifier))
+            if (l is Identifier)
             {
                 return new IdentNode(l);
             }
@@ -63,7 +63,7 @@ namespace myPascal
                 if (_lex.GetLexem().Value != Pascal.lexRParent) // Require
                 {
                     throw new Exception($"{_lex.FilePath}{l.Coordinates} " +
-                                        $"Fatal: Syntax error, \"{Pascal.lexRParent}\" expected but {_lex.GetLexem().Value} found");
+                                        $"Fatal: Syntax error, \"{Pascal.lexRParent}\" expected but {_lex.GetLexem().SourceCode} found");
                 }
                 _lex.NextLexem();
 
