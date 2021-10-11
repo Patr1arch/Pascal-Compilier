@@ -27,11 +27,17 @@ namespace myPascal
         
         public static string lexRParent = ")";
 
+        public static string programKey = "program";
+
+        public static char sepStatement = ';';
+
+        public static string opAssign = ":=";
+
         public static List<char> Separators = new List<char>
         {
             '[',
             ']',
-            ';',
+            sepStatement,
             '(',
             ')',
             ':',
@@ -40,7 +46,7 @@ namespace myPascal
         
         public static List<string> Operators = new List<string>
         {
-            ":=",
+            opAssign,
             "=",
             "<>",
             "<",
@@ -96,7 +102,7 @@ namespace myPascal
                 "while",
                 "word",
                 "xor",
-                "program",
+                programKey,
                 "integer",
                 "real",
                 "of",
