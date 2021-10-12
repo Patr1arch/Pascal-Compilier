@@ -33,6 +33,8 @@ namespace myPascal
 
         public static string opAssign = ":=";
 
+        public static char sepComma = ',';
+
         public static List<char> Separators = new List<char>
         {
             '[',
@@ -41,7 +43,7 @@ namespace myPascal
             '(',
             ')',
             ':',
-            ','
+            sepComma
         };
         
         public static List<string> Operators = new List<string>

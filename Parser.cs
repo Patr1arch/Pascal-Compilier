@@ -38,7 +38,7 @@ namespace myPascal
         }
         
         // Same logic but without throwing excepctions and return value
-        public bool RequireNoThrows(string lexemName)
+        public bool RequireWithoutThrows(string lexemName)
         {
             if (_lex.GetLexem().Value.ToLower() == lexemName)
             {
@@ -74,7 +74,7 @@ namespace myPascal
             do
             {
                 seq.Statements.Add(ParseStatement());
-            } while (RequireNoThrows(Pascal.sepStatement.ToString()));
+            } while (RequireWithoutThrows(Pascal.sepStatement.ToString()));
             return seq;
         }
 
@@ -89,18 +89,49 @@ namespace myPascal
                     _lex.NextLexem();
                     return new AssignStatement(ident, ParseExpr());
                 }
-                else // It's also be procedure identifier
+                else // It's also can be procedure identifier
                 {
-                    return ident;
+                    return ParseCallable(ident);
                 }
             }
+            //else if ()
 
             return new Node();
         }
 
-        public Node ParseExpr()
+        public Node ParseCallable(IdentNode ident)
         {
-            Node left = ParseTerm();
+            var callNode = new CallNode(ident);
+            if (_lex.GetLexem().Value == Pascal.lexLParent)
+            {
+                _lex.NextLexem();
+                int count = 0;
+                while (!RequireWithoutThrows(Pascal.lexRParent) && !_lex.IsEOFReached)
+                {
+                    if (count++ != 0)
+                        Require(Pascal.sepComma.ToString());
+                    var lexem = _lex.GetLexem();
+                    if (lexem is Identifier)
+                    {
+                        _lex.NextLexem();
+                        if (_lex.GetLexem().Value == Pascal.lexLParent)
+                            callNode.Args.Add(ParseCallable(new IdentNode(lexem)));
+                        else 
+                            callNode.Args.Add(ParseExpr(new IdentNode(lexem)));
+                    }
+                    else
+                    {
+                        callNode.Args.Add(ParseExpr());
+                    }
+                }
+            }
+            
+            return callNode;
+        }
+
+        public Node ParseExpr(Node nd = null)
+        {
+            Node left = nd ?? ParseTerm();
             AbstractLexem op = _lex.GetLexem();
             while (op.Value == Pascal.opPlus || op.Value == Pascal.opMinus)
             {
@@ -133,10 +164,13 @@ namespace myPascal
             _lex.NextLexem();
             if (l is Identifier)
             {
+                _lex.GetLexem();
+                if (_lex.GetLexem().Value == Pascal.lexLParent) // Callable Node
+                    return ParseCallable(new IdentNode(l));
                 return new IdentNode(l);
             }
 
-            if (l.GetType() == typeof(IntegerLiteral))
+            if (l is IntegerLiteral)
             {
                 return new IntegerNode(l);
             }

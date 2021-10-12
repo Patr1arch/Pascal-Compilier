@@ -493,6 +493,14 @@ namespace LexerTestProject
                 Parser parser = new Parser(lex);
                 Debug.WriteLine(parser.ParseProgram().Print());
             }
+            
+            [Test]
+            public void CallIdent()
+            {
+                Lexer lex = new Lexer("TestPascalFiles\\CallIdent.pas");
+                Parser parser = new Parser(lex);
+                Debug.WriteLine(parser.ParseProgram().Print());
+            }
 
         }
     }

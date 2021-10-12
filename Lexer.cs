@@ -298,5 +298,7 @@ namespace myPascal
         {
             return _currentLexem;
         }
+
+        public bool IsEOFReached => _stream.EndOfStream;
     }
 }
