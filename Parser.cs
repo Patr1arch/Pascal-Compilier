@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using myPascal.Lexems;
 using myPascal.Nodes;
 
@@ -165,6 +166,45 @@ namespace myPascal
                 }
 
                 return ifNode;
+            }
+
+            if (_lex.GetLexem().Value == Pascal.keyCase)
+            {
+                _lex.NextLexem();
+                var caseNode = new CaseNode(ParseExpr());
+                Require(Pascal.keyOf);
+                do
+                {
+                    var cnst = _lex.GetLexem();
+                    var caseLabelList = new List<Node>();
+                    while (cnst.Value != Pascal.sepColon.ToString())
+                    {
+                        if (cnst.Value == Pascal.sepComma.ToString())
+                        {
+                        }
+                        else if (cnst is Identifier)
+                        {
+                            caseLabelList.Add(new IdentNode(cnst));
+                        }
+                        else if (cnst is IntegerLiteral)
+                        {
+                            caseLabelList.Add(new IntegerNode(cnst));
+                        }
+                        else if (cnst is StringLiteral)
+                        {
+                            caseLabelList.Add(new StringNode(cnst));
+                        }
+                        else throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +
+                                                 $"Fatal: Expected constant variable");
+                        _lex.NextLexem();
+                        cnst = _lex.GetLexem();
+                    }
+                    Require(Pascal.sepColon.ToString());
+                    caseNode.Cases.Add((caseLabelList, ParseStatement()));
+                } while (RequireWithoutThrows(Pascal.sepStatement.ToString()) &&
+                         _lex.GetLexem().Value != Pascal.keyEnd);
+                Require(Pascal.keyEnd);
+                return caseNode;
             }
 
             throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +

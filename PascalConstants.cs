@@ -60,6 +60,12 @@ namespace myPascal
         
         public static string keyElse = "else";
 
+        public static string keyCase = "case";
+
+        public static string keyOf = "of";
+
+        public static char sepColon = ':';
+
         public static List<char> Separators = new List<char>
         {
             '[',
@@ -67,7 +73,7 @@ namespace myPascal
             sepStatement,
             '(',
             ')',
-            ':',
+            sepColon,
             sepComma
         };
 
@@ -136,7 +142,7 @@ namespace myPascal
                 programKey,
                 "integer",
                 "real",
-                "of",
+                keyOf,
                 "var",
                 keyBegin,
                 "string",
@@ -144,7 +150,8 @@ namespace myPascal
                 "function",
                 keyFor,
                 keyTo,
-                keyDownto
+                keyDownto,
+                keyCase
             };
     }
 }

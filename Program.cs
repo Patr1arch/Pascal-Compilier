@@ -65,7 +65,7 @@ namespace myPascal
                 case 1:
                     try
                     {
-                        var res = parser.ParseExpr();
+                        var res = parser.ParseProgram();
                         Console.Write(res.Print());
                     }
                     catch (Exception e)
