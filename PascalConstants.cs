@@ -47,6 +47,12 @@ namespace myPascal
 
         public static string keyUntil = "until";
 
+        public static string keyFor = "for";
+
+        public static string keyTo = "to";
+
+        public static string keyDownto = "downto";
+
         public static List<char> Separators = new List<char>
         {
             '[',
@@ -128,7 +134,10 @@ namespace myPascal
                 keyBegin,
                 "string",
                 "procedure",
-                "function"
+                "function",
+                keyFor,
+                keyTo,
+                keyDownto
             };
     }
 }

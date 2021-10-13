@@ -533,6 +533,18 @@ namespace LexerTestProject
                     new StreamReader("TestPascalFiles\\ParserOutput\\RepeatStmtOut.txt")
                         .ReadToEnd().Replace("\r\n", "\n")); // For Windows
             }
+            
+            [Test]
+            public void ForStmt()
+            {
+                Lexer lex = new Lexer("TestPascalFiles\\ForStmt.pas");
+                Parser parser = new Parser(lex);
+                var deb = parser.ParseProgram().Print();
+                Debug.WriteLine(deb);
+                Assert.AreEqual(deb,
+                    new StreamReader("TestPascalFiles\\ParserOutput\\ForStmtOut.txt")
+                        .ReadToEnd().Replace("\r\n", "\n")); // For Windows
+            }
 
         }
     }

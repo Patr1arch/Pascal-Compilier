@@ -124,6 +124,33 @@ namespace myPascal
                 return repeatNode;
             }
 
+            if (_lex.GetLexem().Value == Pascal.keyFor)
+            {
+                _lex.NextLexem();
+                if (_lex.GetLexem() is Identifier)
+                {
+                    var forNode = new ForNode(_lex.GetLexem());
+                    _lex.NextLexem();
+                    Require(Pascal.opAssign);
+                    forNode.InitialExpr = ParseExpr();
+                    if (_lex.GetLexem().Value == Pascal.keyTo)
+                        forNode.IsTo = true;
+                    else if (_lex.GetLexem().Value == Pascal.keyDownto)
+                        forNode.IsTo = false;
+                    else throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +
+                                                   $"Fatal: Syntax error, \"{Pascal.lexRParent}\" expected but " +
+                                                   $"{_lex.GetLexem().SourceCode} found");
+                    _lex.NextLexem();
+                    forNode.FinalExpr = ParseExpr();
+                    Require(Pascal.keyDo);
+                    forNode.Body = ParseStatement();
+                    return forNode;
+                }
+                else
+                    throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +
+                                    $"Fatal: Expected variable identifier");
+            }
+
             throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +
                                 $"Fatal: Unexpected lexem {_lex.GetLexem().Value}");
         }
