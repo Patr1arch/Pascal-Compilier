@@ -76,10 +76,14 @@ namespace myPascal
 
         public static string keyAnd = "and";
 
+        public static char sepLBracket = '[';
+        
+        public static char sepRBracket = ']';
+
         public static List<char> Separators = new List<char>
         {
-            '[',
-            ']',
+            sepLBracket,
+            sepRBracket,
             sepStatement,
             '(',
             ')',

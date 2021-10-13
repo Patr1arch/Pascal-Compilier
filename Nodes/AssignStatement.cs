@@ -2,10 +2,11 @@
 {
     public class AssignStatement : Node
     {
-        private IdentNode _left;
+        // TODO: _left is Identrifier. May make ArrayAccess derivative from IdentNode?
+        private Node _left;
         private Node _right;
 
-        public AssignStatement(IdentNode left, Node exprNode)
+        public AssignStatement(Node left, Node exprNode)
         {
             _left = left;
             _right = exprNode;

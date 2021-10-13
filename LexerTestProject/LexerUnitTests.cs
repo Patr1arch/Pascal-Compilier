@@ -581,6 +581,18 @@ namespace LexerTestProject
                     new StreamReader("TestPascalFiles\\ParserOutput\\NilAndUnariesOut.txt")
                         .ReadToEnd().Replace("\r\n", "\n")); // For Windows
             }
+            
+            [Test]
+            public void ArrayAccess()
+            {
+                Lexer lex = new Lexer("TestPascalFiles\\ArrayAccess.pas");
+                Parser parser = new Parser(lex);
+                var deb = parser.ParseProgram().Print();
+                Debug.WriteLine(deb);
+                Assert.AreEqual(deb,
+                    new StreamReader("TestPascalFiles\\ParserOutput\\ArrayAccessOut.txt")
+                        .ReadToEnd().Replace("\r\n", "\n")); // For Windows
+            }
 
         }
     }

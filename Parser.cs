@@ -82,19 +82,32 @@ namespace myPascal
             } while (RequireWithoutThrows(Pascal.sepStatement.ToString()));
             return seq;
         }
+        
+        public Node ParseVariable()
+        {
+            IdentNode ident = new IdentNode(_lex.GetLexem());
+            _lex.NextLexem();
+            if (_lex.GetLexem().Value == Pascal.sepLBracket.ToString())
+            {
+                return ParseArrayAccess(ident);
+            }
+
+            return ident;
+        }
 
         public Node ParseStatement()
         {
             if (_lex.GetLexem() is Identifier)
             {
-                var ident = new IdentNode(_lex.GetLexem());
-                _lex.NextLexem();
+                Node ident = ParseVariable();
                 if (_lex.GetLexem().Value == Pascal.opAssign) // It's assign statement
                 {
                     _lex.NextLexem();
+                    //if (_lex.GetLexem().Value == Pascal.sepLBracket.ToString())
+                    //    return new AssignStatement(ParseArrayAccess(ident), ParseExpr());
                     return new AssignStatement(ident, ParseExpr());
                 }
-                else // It's also can be procedure identifier
+                else
                 {
                     return ParseCallable(ident);
                 }
@@ -211,7 +224,7 @@ namespace myPascal
                                 $"Fatal: Unexpected lexem {_lex.GetLexem().Value}");
         }
 
-        public Node ParseCallable(IdentNode ident)
+        public Node ParseCallable(Node ident)
         {
             var callNode = new CallNode(ident);
             if (_lex.GetLexem().Value == Pascal.lexLParent)
@@ -239,6 +252,19 @@ namespace myPascal
             }
             
             return callNode;
+        }
+
+        public Node ParseArrayAccess(Node ident)
+        {
+            var arr = new ArrayAccessNode(ident);
+            Require(Pascal.sepLBracket.ToString());
+            do
+            {
+                arr.Indexes.Add(ParseExpr());
+            } while (RequireWithoutThrows(Pascal.sepComma.ToString()) &&
+                     _lex.GetLexem().Value != Pascal.sepRBracket.ToString());
+            Require(Pascal.sepRBracket.ToString());
+            return arr;
         }
 
         public Node ParseExpr(Node nd = null)
@@ -300,6 +326,8 @@ namespace myPascal
                     return new UnaryOpNode(l, ParseFactor()); // Not factor?
                 if (_lex.GetLexem().Value == Pascal.lexLParent) // Callable Node
                     return ParseCallable(new IdentNode(l));
+                if (_lex.GetLexem().Value == Pascal.sepLBracket.ToString())
+                    return ParseArrayAccess(new IdentNode(l));
                 return new IdentNode(l);
             }
 

@@ -5,9 +5,9 @@ namespace myPascal.Nodes
     public class CallNode : Node
     {
         public readonly List<Node> Args;
-        private IdentNode _parent;
+        private Node _parent;
 
-        public CallNode(IdentNode ident)
+        public CallNode(Node ident)
         {
             _parent = ident;
             Args = new List<Node>();

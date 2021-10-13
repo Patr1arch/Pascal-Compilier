@@ -15,7 +15,6 @@ namespace myPascal
         private int _currentSymbolNumber;
         private AbstractLexem _currentLexem;
         private string _filePath;
-        private Queue<AbstractLexem> _queue;
 
         public string FilePath => _filePath;
         public Lexer(string filePath)
