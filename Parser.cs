@@ -29,6 +29,7 @@ namespace myPascal
         
         public void Require(Type lexemType)
         {
+            // TODO: What about _ ?
             if (_lex.GetLexem().GetType() != lexemType)
             {
                 throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +
@@ -149,6 +150,21 @@ namespace myPascal
                 else
                     throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +
                                     $"Fatal: Expected variable identifier");
+            }
+
+            if (_lex.GetLexem().Value == Pascal.keyIf)
+            {
+                _lex.NextLexem();
+                var ifNode = new IfNode(ParseExpr());
+                Require(Pascal.keyThen);
+                ifNode.ThenStmt = ParseStatement();
+                if (_lex.GetLexem().Value == Pascal.keyElse)
+                {
+                    _lex.NextLexem();
+                    ifNode.ElseStmt = ParseStatement();
+                }
+
+                return ifNode;
             }
 
             throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +

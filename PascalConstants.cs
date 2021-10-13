@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using myPascal.Lexems;
 
 namespace myPascal
 {
@@ -53,6 +54,12 @@ namespace myPascal
 
         public static string keyDownto = "downto";
 
+        public static string keyIf = "if";
+
+        public static string keyThen = "then";
+        
+        public static string keyElse = "else";
+
         public static List<char> Separators = new List<char>
         {
             '[',
@@ -102,10 +109,10 @@ namespace myPascal
                 opDiv,
                 "do",
                 "double",
-                "else",
+                keyElse,
                 keyEnd,
                 "false",
-                "if",
+                keyIf,
                 "int64",
                 "longint",
                 "longword",
@@ -119,7 +126,7 @@ namespace myPascal
                 "shr",
                 "single",
                 "smallint",
-                "then",
+                keyThen,
                 "true",
                 "uint64",
                 keyUntil,
