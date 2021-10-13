@@ -35,6 +35,14 @@ namespace myPascal
 
         public static char sepComma = ',';
 
+        public static string keyBegin = "begin";
+
+        public static string keyEnd = "end";
+
+        public static string keyWhile = "while";
+
+        public static string keyDo = "do";
+
         public static List<char> Separators = new List<char>
         {
             '[',
@@ -81,7 +89,7 @@ namespace myPascal
                 "do",
                 "double",
                 "else",
-                "end",
+                keyEnd,
                 "false",
                 "if",
                 "int64",
@@ -101,7 +109,7 @@ namespace myPascal
                 "true",
                 "uint64",
                 "until",
-                "while",
+                keyWhile,
                 "word",
                 "xor",
                 programKey,
@@ -109,7 +117,7 @@ namespace myPascal
                 "real",
                 "of",
                 "var",
-                "begin",
+                keyBegin,
                 "string",
                 "procedure",
                 "function"

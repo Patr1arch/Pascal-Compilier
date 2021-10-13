@@ -73,6 +73,8 @@ namespace myPascal
             var seq = new StatementSequence();
             do
             {
+                if (_lex.GetLexem().Value == "end." || _lex.GetLexem().Value == Pascal.keyEnd)
+                    break;
                 seq.Statements.Add(ParseStatement());
             } while (RequireWithoutThrows(Pascal.sepStatement.ToString()));
             return seq;
@@ -94,9 +96,26 @@ namespace myPascal
                     return ParseCallable(ident);
                 }
             }
-            //else if ()
 
-            return new Node();
+            if (_lex.GetLexem().Value == Pascal.keyBegin)
+            {
+                _lex.NextLexem();
+                var stmt = ParseStatementSequence();
+                Require(Pascal.keyEnd);
+                return stmt;
+            }
+
+            if (_lex.GetLexem().Value == Pascal.keyWhile)
+            {
+                _lex.NextLexem();
+                var whileNode = new WhileNode(ParseExpr());
+                Require(Pascal.keyDo);
+                whileNode.Body = ParseStatement();
+                return whileNode;
+            }
+
+            throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +
+                                $"Fatal: Unexpected lexem {_lex.GetLexem().Value}");
         }
 
         public Node ParseCallable(IdentNode ident)
@@ -162,7 +181,7 @@ namespace myPascal
         {
             var l = _lex.GetLexem();
             _lex.NextLexem();
-            if (l is Identifier)
+            if (l is AbstractIdentifier)
             {
                 _lex.GetLexem();
                 if (_lex.GetLexem().Value == Pascal.lexLParent) // Callable Node

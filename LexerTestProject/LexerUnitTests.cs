@@ -501,6 +501,14 @@ namespace LexerTestProject
                 Parser parser = new Parser(lex);
                 Debug.WriteLine(parser.ParseProgram().Print());
             }
+            
+            [Test]
+            public void WhileStmt()
+            {
+                Lexer lex = new Lexer("TestPascalFiles\\ParseWhile.pas");
+                Parser parser = new Parser(lex);
+                Debug.WriteLine(parser.ParseProgram().Print());
+            }
 
         }
     }
