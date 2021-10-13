@@ -64,7 +64,7 @@ namespace myPascal
         public Node ParseBlock()
         {
             // WIP: Without declaration part
-            Require("begin");
+            Require(Pascal.keyBegin);
             var stms = ParseStatementSequence();
             Require("end.");
             return stms;
@@ -83,15 +83,39 @@ namespace myPascal
             return seq;
         }
         
-        public Node ParseVariable()
+        public Node ParseVariable(IdentNode nd = null)
         {
-            IdentNode ident = new IdentNode(_lex.GetLexem());
-            _lex.NextLexem();
+            IdentNode ident = null;
+            
+            if (nd != null)
+            {
+                ident = nd;
+            }
+            else
+            {
+                ident = new IdentNode(_lex.GetLexem());
+                _lex.NextLexem();
+            }
+            Node specialNode = null;
             if (_lex.GetLexem().Value == Pascal.sepLBracket.ToString())
             {
-                return ParseArrayAccess(ident);
+                specialNode = ParseArrayAccess(ident);
             }
 
+            if (_lex.GetLexem().Value == Pascal.opCaret)
+            {
+                _lex.NextLexem();
+                if (_lex.GetLexem().Value == Pascal.sepDot.ToString())
+                {
+                    _lex.NextLexem();
+                    if (_lex.GetLexem() is Identifier)
+                        return  new RecordFieldAccessNode(new PointerNode(ident), ParseVariable());
+                    else throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +
+                                             $"Fatal: Expected record field identifier");
+                }
+                return new PointerNode(specialNode ?? ident);
+            }
+            
             if (_lex.GetLexem().Value == Pascal.sepDot.ToString())
             {
                 _lex.NextLexem();
@@ -101,7 +125,7 @@ namespace myPascal
                                          $"Fatal: Expected record field identifier");
             }
 
-            return ident;
+            return specialNode ?? ident;
         }
 
         public Node ParseStatement()
@@ -244,16 +268,16 @@ namespace myPascal
                 {
                     if (count++ != 0)
                         Require(Pascal.sepComma.ToString());
-                    var lexem = _lex.GetLexem();
-                    if (lexem is Identifier)
-                    {
-                        _lex.NextLexem();
-                        if (_lex.GetLexem().Value == Pascal.lexLParent)
-                            callNode.Args.Add(ParseCallable(new IdentNode(lexem)));
-                        else 
-                            callNode.Args.Add(ParseExpr(new IdentNode(lexem)));
-                    }
-                    else
+                    // var lexem = _lex.GetLexem();
+                    // if (lexem is Identifier)
+                    // {
+                    //     _lex.NextLexem();
+                    //     if (_lex.GetLexem().Value == Pascal.lexLParent)
+                    //         callNode.Args.Add(ParseCallable(new IdentNode(lexem)));
+                    //     else 
+                    //         callNode.Args.Add(ParseVariable(new IdentNode(lexem)));
+                    // }
+                    //else
                     {
                         callNode.Args.Add(ParseExpr());
                     }
@@ -302,7 +326,7 @@ namespace myPascal
         {
             var posUnary = _lex.GetLexem();
             Node left = null;
-            if (posUnary.Value == Pascal.opPlus || posUnary.Value == Pascal.opMinus)
+            if (posUnary.Value == Pascal.opPlus || posUnary.Value == Pascal.opMinus || posUnary.Value == Pascal.opMemoryAdress)
             {
                 _lex.NextLexem();
                 left = new UnaryOpNode(posUnary, ParseFactor());
@@ -337,7 +361,7 @@ namespace myPascal
                     return ParseCallable(new IdentNode(l));
                 if (_lex.GetLexem().Value == Pascal.sepLBracket.ToString())
                     return ParseArrayAccess(new IdentNode(l));
-                return new IdentNode(l);
+                return ParseVariable(new IdentNode(l));
             }
 
             if (l is IntegerLiteral)

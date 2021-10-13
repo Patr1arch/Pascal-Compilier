@@ -264,12 +264,11 @@ namespace myPascal
                 @operator.Value += _buffer;
                 @operator.SourceCode += _buffer;
                 
-                if (Pascal.Operators.Contains((currSym = (char) _stream.Read()).ToString()) ||
-                    Pascal.RelationalOperators.Contains(currSym.ToString()) ||
-                    currSym == '.')
+                if (Pascal.Operators.Contains(@operator.Value + (currSym = (char) _stream.Read()).ToString()) ||
+                    Pascal.RelationalOperators.Contains(@operator.Value + currSym.ToString()))
                 {
-                    @operator.Value += _buffer;
-                    @operator.SourceCode += _buffer;
+                    @operator.Value += currSym;
+                    @operator.SourceCode += currSym;
                     _currentSymbolNumber++; // Operator of two symbols
                     _currentLexem = @operator;
                 

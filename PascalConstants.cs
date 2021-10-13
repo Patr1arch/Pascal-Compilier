@@ -82,6 +82,10 @@ namespace myPascal
 
         public static char sepDot = '.';
 
+        public static string opCaret = "^";
+
+        public static string opMemoryAdress = "@";
+
         public static List<char> Separators = new List<char>
         {
             sepLBracket,
@@ -101,7 +105,7 @@ namespace myPascal
             "<",
             ">",
             "<=",
-            ">=",
+            ">="
         };
         
         public static List<string> Operators = new List<string>
@@ -112,7 +116,9 @@ namespace myPascal
             opMult,
             opDiv,
             "<<",
-            ">>"
+            ">>",
+            opCaret,
+            opMemoryAdress
         };
         
         public enum Keyword

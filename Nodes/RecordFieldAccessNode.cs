@@ -4,11 +4,11 @@ namespace myPascal.Nodes
 {
     public class RecordFieldAccessNode : Node
     {
-        public IdentNode Parent { get; set; }
+        public Node Parent { get; set; }
         
         public Node Child { get; set; }
 
-        public RecordFieldAccessNode(IdentNode parent, Node child)
+        public RecordFieldAccessNode(Node parent, Node child)
         {
             Parent = parent;
             Child = child;
