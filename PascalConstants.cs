@@ -66,6 +66,16 @@ namespace myPascal
 
         public static char sepColon = ':';
 
+        public static string keyNil = "nil";
+        
+        public static string keyNot = "not";
+
+        public static string keyIn = "in";
+
+        public static string keyOr = "or";
+
+        public static string keyAnd = "and";
+
         public static List<char> Separators = new List<char>
         {
             '[',
@@ -106,8 +116,8 @@ namespace myPascal
         //Dictionary<
         public static List<string> Keywords = new List<string>
             {
-                "and",
-                "or",
+                keyAnd,
+                keyOr,
                 "boolean",
                 "break",
                 "byte",
@@ -123,7 +133,7 @@ namespace myPascal
                 "longint",
                 "longword",
                 opMod,
-                "not",
+                keyNot,
                 "or",
                 "qword",
                 keyRepeat,
@@ -151,7 +161,9 @@ namespace myPascal
                 keyFor,
                 keyTo,
                 keyDownto,
-                keyCase
+                keyCase,
+                keyNil,
+                keyIn
             };
     }
 }

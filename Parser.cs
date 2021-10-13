@@ -245,7 +245,7 @@ namespace myPascal
         {
             Node left = nd ?? ParseTerm();
             AbstractLexem op = _lex.GetLexem();
-            while (op.Value == Pascal.opPlus || op.Value == Pascal.opMinus)
+            while (op.Value == Pascal.opPlus || op.Value == Pascal.opMinus || op.Value == Pascal.keyOr)
             {
                 _lex.NextLexem();
                 Node right = ParseTerm();
@@ -254,10 +254,10 @@ namespace myPascal
             }
             
             AbstractLexem rop = _lex.GetLexem();
-            if (Pascal.RelationalOperators.Contains(rop.Value))
+            if (Pascal.RelationalOperators.Contains(rop.Value) || rop.Value == Pascal.keyIn)
             {
                 _lex.NextLexem();
-                return new BinOpNode(left, rop, ParseExpr());
+                return new BinOpNode(left, rop, ParseTerm());
             }
 
             return left;
@@ -265,9 +265,20 @@ namespace myPascal
 
         public Node ParseTerm()
         {
-            Node left = ParseFactor();
+            var posUnary = _lex.GetLexem();
+            Node left = null;
+            if (posUnary.Value == Pascal.opPlus || posUnary.Value == Pascal.opMinus)
+            {
+                _lex.NextLexem();
+                left = new UnaryOpNode(posUnary, ParseFactor());
+            }
+            else left = ParseFactor();
             AbstractLexem op = _lex.GetLexem();
-            if (op.Value == Pascal.opMult || op.Value == Pascal.opDiv || op.Value == Pascal.opIntDiv || op.Value == Pascal.opMod)
+            if (op.Value == Pascal.opMult || 
+                op.Value == Pascal.opDiv || 
+                op.Value == Pascal.opIntDiv || 
+                op.Value == Pascal.opMod ||
+                op.Value == Pascal.keyAnd)
             {
                 _lex.NextLexem();
                 Node right = ParseTerm();
@@ -283,7 +294,10 @@ namespace myPascal
             _lex.NextLexem();
             if (l is AbstractIdentifier) // true, false is keywords
             {
-                _lex.GetLexem();
+                if (l.Value == Pascal.keyNil)
+                    return new NilNode(l);
+                if (l.Value == Pascal.keyNot)
+                    return new UnaryOpNode(l, ParseFactor()); // Not factor?
                 if (_lex.GetLexem().Value == Pascal.lexLParent) // Callable Node
                     return ParseCallable(new IdentNode(l));
                 return new IdentNode(l);
@@ -311,7 +325,7 @@ namespace myPascal
 
                 return e;
             }
-
+    
             throw new Exception($"{_lex.FilePath}{l.Coordinates} Fatal: Unexpected lexem {l.Value}");
         }
     }

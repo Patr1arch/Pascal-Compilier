@@ -80,6 +80,7 @@ namespace myPascal
             }
             else if (sym == '/' && (sym = (char) _stream.Read()) == '/') // Cautions
             {
+                // TODO: Fix bug with (see NilAndUnaries test)
                 while (sym != '\n' && !_stream.EndOfStream)
                 {
                     sym = (char) _stream.Read();
@@ -276,12 +277,16 @@ namespace myPascal
                     @operator.Value += _buffer;
                     @operator.SourceCode += _buffer;
                     _currentSymbolNumber++; // Operator of two symbols
-                }
-
-                _currentLexem = @operator;
+                    _currentLexem = @operator;
                 
-                // To satisfy common invarant
-                currSym = (char) _stream.Read();
+                    // To satisfy common invarant
+                    currSym = (char) _stream.Read();
+                }
+                else
+                {
+                    _currentLexem = @operator;
+                }
+                
             }
 
             _buffer = currSym;
