@@ -43,6 +43,10 @@ namespace myPascal
 
         public static string keyDo = "do";
 
+        public static string keyRepeat = "repeat";
+
+        public static string keyUntil = "until";
+
         public static List<char> Separators = new List<char>
         {
             '[',
@@ -53,16 +57,20 @@ namespace myPascal
             ':',
             sepComma
         };
-        
-        public static List<string> Operators = new List<string>
+
+        public static List<string> RelationalOperators = new List<string>()
         {
-            opAssign,
             "=",
             "<>",
             "<",
             ">",
             "<=",
             ">=",
+        };
+        
+        public static List<string> Operators = new List<string>
+        {
+            opAssign,
             opPlus, 
             opMinus,
             opMult,
@@ -99,7 +107,7 @@ namespace myPascal
                 "not",
                 "or",
                 "qword",
-                "repeat",
+                keyRepeat,
                 "shl",
                 "shortint",
                 "shr",
@@ -108,7 +116,7 @@ namespace myPascal
                 "then",
                 "true",
                 "uint64",
-                "until",
+                keyUntil,
                 keyWhile,
                 "word",
                 "xor",

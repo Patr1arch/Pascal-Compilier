@@ -491,7 +491,11 @@ namespace LexerTestProject
             {
                 Lexer lex = new Lexer("TestPascalFiles\\AssignStmt.pas");
                 Parser parser = new Parser(lex);
-                Debug.WriteLine(parser.ParseProgram().Print());
+                var deb = parser.ParseProgram().Print();
+                Debug.WriteLine(deb);
+                Assert.AreEqual(deb,
+                    new StreamReader("TestPascalFiles\\ParserOutput\\AssignStmtOut.txt")
+                        .ReadToEnd().Replace("\r\n", "\n")); // For Windows
             }
             
             [Test]
@@ -499,7 +503,11 @@ namespace LexerTestProject
             {
                 Lexer lex = new Lexer("TestPascalFiles\\CallIdent.pas");
                 Parser parser = new Parser(lex);
-                Debug.WriteLine(parser.ParseProgram().Print());
+                var deb = parser.ParseProgram().Print();
+                Debug.WriteLine(deb);
+                Assert.AreEqual(deb,
+                    new StreamReader("TestPascalFiles\\ParserOutput\\CallIdentOut.txt")
+                        .ReadToEnd().Replace("\r\n", "\n")); // For Windows
             }
             
             [Test]
@@ -507,7 +515,23 @@ namespace LexerTestProject
             {
                 Lexer lex = new Lexer("TestPascalFiles\\ParseWhile.pas");
                 Parser parser = new Parser(lex);
-                Debug.WriteLine(parser.ParseProgram().Print());
+                var deb = parser.ParseProgram().Print();
+                Debug.WriteLine(deb);
+                Assert.AreEqual(deb,
+                    new StreamReader("TestPascalFiles\\ParserOutput\\ParseWhileOut.txt")
+                        .ReadToEnd().Replace("\r\n", "\n")); // For Windows
+            }
+            
+            [Test]
+            public void RepeatStmt()
+            {
+                Lexer lex = new Lexer("TestPascalFiles\\RepeatStmt.pas");
+                Parser parser = new Parser(lex);
+                var deb = parser.ParseProgram().Print();
+                Debug.WriteLine(deb);
+                Assert.AreEqual(deb,
+                    new StreamReader("TestPascalFiles\\ParserOutput\\RepeatStmtOut.txt")
+                        .ReadToEnd().Replace("\r\n", "\n")); // For Windows
             }
 
         }

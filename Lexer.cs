@@ -15,6 +15,7 @@ namespace myPascal
         private int _currentSymbolNumber;
         private AbstractLexem _currentLexem;
         private string _filePath;
+        private Queue<AbstractLexem> _queue;
 
         public string FilePath => _filePath;
         public Lexer(string filePath)
@@ -259,14 +260,18 @@ namespace myPascal
                     _currentLexem = separator;
                 }
             }
-            else if (Pascal.Operators.Contains(currSym.ToString()) || currSym == '.')
+            else if (Pascal.Operators.Contains(currSym.ToString()) || 
+                     Pascal.RelationalOperators.Contains(currSym.ToString()) ||
+                     currSym == '.')
             {
                 Operator @operator = new Operator(_currentStringNumber, _currentSymbolNumber);
                 _buffer = currSym;
                 @operator.Value += _buffer;
                 @operator.SourceCode += _buffer;
                 
-                if (Pascal.Operators.Contains((currSym = (char) _stream.Read()).ToString()) || currSym == '.')
+                if (Pascal.Operators.Contains((currSym = (char) _stream.Read()).ToString()) ||
+                    Pascal.RelationalOperators.Contains(currSym.ToString()) ||
+                    currSym == '.')
                 {
                     @operator.Value += _buffer;
                     @operator.SourceCode += _buffer;
@@ -287,13 +292,7 @@ namespace myPascal
         {
             return _currentLexem.ToString();
         }
-        
-        public AbstractLexem GetNextLexem()
-        {
-            NextLexem();
-            return _currentLexem;
-        }
-        
+
         public AbstractLexem GetLexem()
         {
             return _currentLexem;

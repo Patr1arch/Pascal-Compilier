@@ -73,7 +73,8 @@ namespace myPascal
             var seq = new StatementSequence();
             do
             {
-                if (_lex.GetLexem().Value == "end." || _lex.GetLexem().Value == Pascal.keyEnd)
+                if (_lex.GetLexem().Value == "end." || _lex.GetLexem().Value == Pascal.keyEnd || 
+                    _lex.GetLexem().Value == Pascal.keyUntil)
                     break;
                 seq.Statements.Add(ParseStatement());
             } while (RequireWithoutThrows(Pascal.sepStatement.ToString()));
@@ -112,6 +113,15 @@ namespace myPascal
                 Require(Pascal.keyDo);
                 whileNode.Body = ParseStatement();
                 return whileNode;
+            }
+
+            if (_lex.GetLexem().Value == Pascal.keyRepeat)
+            {
+                _lex.NextLexem();
+                var repeatNode = new RepeatNode(ParseStatementSequence()); // ParseStatementSequence() ?
+                Require(Pascal.keyUntil);
+                repeatNode.UntilCondition = ParseExpr();
+                return repeatNode;
             }
 
             throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +
@@ -159,6 +169,13 @@ namespace myPascal
                 left = new BinOpNode(left, op, right);
                 op = _lex.GetLexem();
             }
+            
+            AbstractLexem rop = _lex.GetLexem();
+            if (Pascal.RelationalOperators.Contains(rop.Value))
+            {
+                _lex.NextLexem();
+                return new BinOpNode(left, rop, ParseExpr());
+            }
 
             return left;
         }
@@ -181,7 +198,7 @@ namespace myPascal
         {
             var l = _lex.GetLexem();
             _lex.NextLexem();
-            if (l is AbstractIdentifier)
+            if (l is AbstractIdentifier) // true, false is keywords
             {
                 _lex.GetLexem();
                 if (_lex.GetLexem().Value == Pascal.lexLParent) // Callable Node
@@ -192,6 +209,11 @@ namespace myPascal
             if (l is IntegerLiteral)
             {
                 return new IntegerNode(l);
+            }
+
+            if (l is StringLiteral)
+            {
+                return new StringNode(l);
             }
 
             if (l.Value == Pascal.lexLParent)
