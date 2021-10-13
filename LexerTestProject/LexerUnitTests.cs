@@ -593,6 +593,18 @@ namespace LexerTestProject
                     new StreamReader("TestPascalFiles\\ParserOutput\\ArrayAccessOut.txt")
                         .ReadToEnd().Replace("\r\n", "\n")); // For Windows
             }
+            
+            [Test]
+            public void FieldAccess()
+            {
+                Lexer lex = new Lexer("TestPascalFiles\\FieldAccess.pas");
+                Parser parser = new Parser(lex);
+                var deb = parser.ParseProgram().Print();
+                Debug.WriteLine(deb);
+                Assert.AreEqual(deb,
+                    new StreamReader("TestPascalFiles\\ParserOutput\\FieldAccessOut.txt")
+                        .ReadToEnd().Replace("\r\n", "\n")); // For Windows
+            }
 
         }
     }

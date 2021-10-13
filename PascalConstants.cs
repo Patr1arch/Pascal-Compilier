@@ -80,6 +80,8 @@ namespace myPascal
         
         public static char sepRBracket = ']';
 
+        public static char sepDot = '.';
+
         public static List<char> Separators = new List<char>
         {
             sepLBracket,
@@ -88,7 +90,8 @@ namespace myPascal
             '(',
             ')',
             sepColon,
-            sepComma
+            sepComma,
+            sepDot
         };
 
         public static List<string> RelationalOperators = new List<string>()

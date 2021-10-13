@@ -92,6 +92,15 @@ namespace myPascal
                 return ParseArrayAccess(ident);
             }
 
+            if (_lex.GetLexem().Value == Pascal.sepDot.ToString())
+            {
+                _lex.NextLexem();
+                if (_lex.GetLexem() is Identifier)
+                    return new RecordFieldAccessNode(ident, ParseVariable());
+                else throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +
+                                         $"Fatal: Expected record field identifier");
+            }
+
             return ident;
         }
 

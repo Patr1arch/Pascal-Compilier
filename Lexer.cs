@@ -240,13 +240,8 @@ namespace myPascal
                 _buffer = currSym;
                 separator.Value += _buffer;
                 separator.SourceCode += _buffer;
-                if ((currSym = (char) _stream.Read()) == '=' && _buffer == ':')
-                //currSym = (char) _stream.Read();
-                //if (currSym == '=' && _buffer == ':')
-                
-                // if (lexer.NextLexem() == ...)
-                // lexer.NextLexem();
-                // if (lexer.GetLexem() == ...)
+                if ((currSym = (char) _stream.Read()) == '=' && _buffer == ':' ||
+                    _buffer == Pascal.sepDot && currSym == Pascal.sepDot)
                 {
                     separator.Value += currSym;
                     separator.SourceCode += currSym;
