@@ -305,23 +305,37 @@ namespace myPascal
             return arr;
         }
 
-        public Node ParseExpr(Node nd = null)
+        public Node ParseExpr()
         {
-            Node left = nd ?? ParseTerm();
-            AbstractLexem op = _lex.GetLexem();
-            while (op.Value == Pascal.opPlus || op.Value == Pascal.opMinus || op.Value == Pascal.keyOr)
-            {
-                _lex.NextLexem();
-                Node right = ParseTerm();
-                left = new BinOpNode(left, op, right);
-                op = _lex.GetLexem();
-            }
-            
+            Node left = ParseSimpleExpr();
             AbstractLexem rop = _lex.GetLexem();
             if (Pascal.RelationalOperators.Contains(rop.Value) || rop.Value == Pascal.keyIn)
             {
                 _lex.NextLexem();
-                return new BinOpNode(left, rop, ParseTerm());
+                return new BinOpNode(left, rop, ParseSimpleExpr());
+            }
+
+            return left;
+        }
+        
+        public Node ParseSimpleExpr()
+        {
+            // TODO: What todo with +1 - -1 ?
+            var posUnary = _lex.GetLexem();
+            Node left = null;
+            if (posUnary.Value == Pascal.opPlus || posUnary.Value == Pascal.opMinus || posUnary.Value == Pascal.opMemoryAdress)
+            {
+                _lex.NextLexem();
+                left = new UnaryOpNode(posUnary, ParseTerm());
+            }
+            else left = ParseTerm();
+            AbstractLexem op = _lex.GetLexem();
+            while (op.Value == Pascal.opPlus || op.Value == Pascal.opMinus || op.Value == Pascal.keyOr)
+            {
+                _lex.NextLexem();
+                Node right = ParseTerm(); 
+                left = new BinOpNode(left, op, right);
+                op = _lex.GetLexem();
             }
 
             return left;
@@ -329,24 +343,18 @@ namespace myPascal
 
         public Node ParseTerm()
         {
-            var posUnary = _lex.GetLexem();
-            Node left = null;
-            if (posUnary.Value == Pascal.opPlus || posUnary.Value == Pascal.opMinus || posUnary.Value == Pascal.opMemoryAdress)
-            {
-                _lex.NextLexem();
-                left = new UnaryOpNode(posUnary, ParseFactor());
-            }
-            else left = ParseFactor();
+            var left = ParseFactor();
             AbstractLexem op = _lex.GetLexem();
-            if (op.Value == Pascal.opMult || 
+            while (op.Value == Pascal.opMult || 
                 op.Value == Pascal.opDiv || 
                 op.Value == Pascal.opIntDiv || 
                 op.Value == Pascal.opMod ||
                 op.Value == Pascal.keyAnd)
             {
                 _lex.NextLexem();
-                Node right = ParseTerm();
-                return new BinOpNode(left, op, right);
+                Node right = ParseFactor();
+                left = new BinOpNode(left, op, right);
+                op = _lex.GetLexem();
             }
 
             return left;
