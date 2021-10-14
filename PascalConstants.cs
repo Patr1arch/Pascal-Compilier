@@ -82,6 +82,10 @@ namespace myPascal
 
         public static char sepDot = '.';
 
+        public static char apostrophe = '\'';
+
+        public static char hash = '#';
+
         public static string opCaret = "^";
 
         public static string opMemoryAdress = "@";

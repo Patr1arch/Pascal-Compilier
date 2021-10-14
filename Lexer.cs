@@ -208,13 +208,13 @@ namespace myPascal
                     _currentLexem = new Identifier(identifier);
                 }
             }
-            else if (currSym == '\'')
+            else if (currSym == Pascal.apostrophe)
             {
                 StringLiteral stringLiteral = new StringLiteral(_currentStringNumber, _currentSymbolNumber);
                 stringLiteral.SourceCode += currSym; // TODO Redefine setters for SourceCode/Value except Integer and Real
                 stringLiteral.Value += currSym;
                 // invariant: we get lexem/word and next symbol
-                while ((currSym = (char) _stream.Read()) != '\'')
+                while ((currSym = (char) _stream.Read()) != Pascal.apostrophe)
                 {
                     if (_stream.EndOfStream || currSym == '\n')
                     {
@@ -226,6 +226,9 @@ namespace myPascal
                     stringLiteral.SourceCode += _buffer;
                     _currentSymbolNumber++;
                 }
+                if (currSym == '\n')
+                    throw new Exception($"{_filePath}{stringLiteral.Coordinates} " +
+                                        $"Fatal: String exceeds line");
                 
                 stringLiteral.Value += currSym;
                 stringLiteral.SourceCode += currSym;
@@ -235,6 +238,26 @@ namespace myPascal
                 currSym = (char) _stream.Read(); // TODO: Optimize this calls if possible
 
                 _currentLexem = stringLiteral;
+            }
+            else if (currSym == Pascal.hash)
+            {
+                StringLiteral lexem = new StringLiteral(_currentStringNumber, _currentSymbolNumber);
+                lexem.SourceCode += currSym;
+                while (char.IsDigit(currSym = (char) _stream.Read()))
+                {
+                    if (IsEOFReached)
+                        throw new Exception($"{_filePath}{lexem.Coordinates} " +
+                                            $"Fatal: String exceeds line");
+                    _buffer = currSym;
+                    lexem.SourceCode += _buffer;
+                    _currentSymbolNumber++;
+                }
+                if (lexem.SourceCode.Length == 1) // Only # without numbers
+                    throw new Exception($"{_filePath}{lexem.Coordinates} " +
+                                        $"Fatal: '#' lexem must has integer value");
+                lexem.Value = Convert.ToChar(Convert.ToInt16(lexem.SourceCode.Substring(1))).ToString();
+
+                _currentLexem = lexem;
             }
             else if (Pascal.Separators.Contains(currSym))
             {
@@ -286,6 +309,11 @@ namespace myPascal
 
             _buffer = currSym;
             _currentSymbolNumber++;
+        }
+
+        public string HandleQuotedString(StringLiteral stringLiteral)
+        {
+            return "";
         }
 
         public string GetLexemName()

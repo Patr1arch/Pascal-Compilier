@@ -207,13 +207,25 @@ namespace LexerTestProject
             Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 3:7\tType: " +
                                                       "Separator\tSource Code: ;\tValue: \";\"");
 
-            // TODO: Add this tests, fix bugs related to this tests(operators)
-            // testLexer.NextLexem();
-            // Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 4:1\tType: " +
-            //                                           "Operator\tSource Code: +\tValue: \"+\""); 
-            // testLexer.NextLexem();
-            // Assert.AreEqual(testLexer.GetLexemName(), 
-            //     "Coordinates: 4:2   Type: Operator  Source Code: +  Value: \"+\""); 
+            //TODO: Add this tests, fix bugs related to this tests(operators)
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 4:1\tType: " +
+                                                      "Operator\tSource Code: +\tValue: \"+\""); 
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 4:2\tType: " +
+                                                      "Operator\tSource Code: +\tValue: \"+\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 4:3\tType: " +
+                                                      "Operator\tSource Code: +\tValue: \"+\""); 
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 4:4\tType: " +
+                                                      "Operator\tSource Code: +\tValue: \"+\""); 
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 4:5\tType: " +
+                                                      "Operator\tSource Code: +\tValue: \"+\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 4:6\tType: " +
+                                                      "Separator\tSource Code: ;\tValue: \";\""); 
         }
         
         [Test]
@@ -399,6 +411,21 @@ namespace LexerTestProject
             testLexer = new Lexer("TestPascalFiles\\FunctionsAndProcudures.pas");
             var a = testLexer.GetAllLexems();
 
+        }
+
+        [Test]
+        public void ControlStrings()
+        {
+            Lexer testLexer = new Lexer("TestPascalFiles\\ControlStrings.pas");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:1\tType: " +
+                                                      "StringLiteral\tSource Code: #50\tValue: \"2\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:4\tType: " +
+                                                      "StringLiteral\tSource Code: #10\tValue: \"\n\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:7\tType: " +
+                                                      "StringLiteral\tSource Code: #0\tValue: \"\0\"");
         }
 
 
@@ -634,6 +661,7 @@ namespace LexerTestProject
                 Lexer lex = new Lexer("TestPascalFiles\\FloatsPar.pas");
                 Parser parser = new Parser(lex);
                 var deb = parser.ParseProgram().Print();
+                Debug.WriteLine(deb);
                 Assert.AreEqual(deb,
                     new StreamReader("TestPascalFiles\\ParserOutput\\FloatsParOut.txt")
                         .ReadToEnd().Replace("\r\n", "\n")); // For Windows
