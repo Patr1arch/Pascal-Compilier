@@ -86,8 +86,8 @@ namespace myPascal
             var seq = new StatementSequence();
             do
             {
-                if (_lex.GetLexem().Value == "end." || _lex.GetLexem().Value == Pascal.keyEnd || 
-                    _lex.GetLexem().Value == Pascal.keyUntil)
+                if (_lex.GetLexem().Value.ToLower() == "end." || _lex.GetLexem().Value.ToLower() == Pascal.keyEnd || 
+                    _lex.GetLexem().Value.ToLower() == Pascal.keyUntil)
                     break;
                 seq.Statements.Add(ParseStatement());
             } while (Ask(Pascal.sepSemicolon.ToString()));
@@ -375,6 +375,11 @@ namespace myPascal
             if (l is StringLiteral)
             {
                 return new StringNode(l);
+            }
+
+            if (l is RealLiteral)
+            {
+                return new RealNode(l);
             }
 
             if (l.Value == Pascal.lexLParent)

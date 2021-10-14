@@ -627,6 +627,17 @@ namespace LexerTestProject
                 Debug.WriteLine(deb);
                 Assert.AreEqual(deb, "");
             }
+            
+            [Test]
+            public void FloatsPar()
+            {
+                Lexer lex = new Lexer("TestPascalFiles\\FloatsPar.pas");
+                Parser parser = new Parser(lex);
+                var deb = parser.ParseProgram().Print();
+                Assert.AreEqual(deb,
+                    new StreamReader("TestPascalFiles\\ParserOutput\\FloatsParOut.txt")
+                        .ReadToEnd().Replace("\r\n", "\n")); // For Windows
+            }
 
         }
     }

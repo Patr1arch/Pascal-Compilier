@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using myPascal.Lexems;
+using System.Globalization;
 using ExtensionMethods;
 
 namespace myPascal
@@ -134,7 +135,8 @@ namespace myPascal
                     currSym == Pascal.HexIdentifier ? Pascal.NumericTypes.Hex : Pascal.NumericTypes.Decimal;
                 literal.SourceCode += currSym;
                 // invariant: we get lexem and the next symbol, start with 2nd symbol of lexem
-                while ((currSym = (char) _stream.Read()).IsDigitOrHexOrBinaryOrFloat())
+                while ((currSym = (char) _stream.Read()).IsDigitOrHexOrBinaryOrFloat() ||
+                       currSym.ToString() == Pascal.opMinus && detectedType == Pascal.NumericTypes.Real)
                 {
                     _buffer = currSym;
                     if (currSym.IsFloat() && detectedType != Pascal.NumericTypes.Hex)
@@ -157,7 +159,7 @@ namespace myPascal
                 }
                 else if (detectedType == Pascal.NumericTypes.Real)
                 {
-                    literal.Value = Convert.ToDouble(literal.SourceCode).ToString();
+                        literal.Value = double.Parse(literal.SourceCode, CultureInfo.InvariantCulture).ToString();
                 }
                 else
                 {

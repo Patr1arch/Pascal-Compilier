@@ -4,7 +4,7 @@
     {
         public RealLiteral(int strNum, int strSym) : base(strNum, strSym) {}
         
-        public RealLiteral(AbstractLiteral literal) : 
+        public RealLiteral(AbstractLexem literal) : 
             base(literal) {}
     }
 }
