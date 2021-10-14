@@ -314,12 +314,7 @@ namespace myPascal
         
         public Node ParseSimpleExpr()
         {
-            // TODO: What todo with +1 - -1 ?
-            var posUnary = _lex.GetLexem();
-            Node left = null;
-            if (Ask(Pascal.opPlus) || Ask(Pascal.opMinus) || Ask(Pascal.opMemoryAdress))
-                left = new UnaryOpNode(posUnary, ParseTerm());
-            else left = ParseTerm();
+            Node left = ParseTerm();
             AbstractLexem op = _lex.GetLexem();
             while (Ask(Pascal.opPlus) || Ask(Pascal.opMinus) || Ask(Pascal.keyOr))
             {
@@ -364,7 +359,10 @@ namespace myPascal
             
             if (l.Value == Pascal.keyNil)
                 return new NilNode(l);
-            if (l.Value == Pascal.keyNot)
+            if (l.Value == Pascal.keyNot ||
+                l.Value == Pascal.opPlus ||
+                l.Value == Pascal.opMinus || 
+                l.Value == Pascal.opMemoryAdress)
                 return new UnaryOpNode(l, ParseFactor());
 
             if (l is IntegerLiteral)
