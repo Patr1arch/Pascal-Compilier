@@ -56,7 +56,7 @@ namespace myPascal
         {
             Require(Pascal.programKey);
             Require(typeof(Identifier));
-            Require(Pascal.sepStatement.ToString());
+            Require(Pascal.sepSemicolon.ToString());
             var block = ParseBlock();
             return block;
         }
@@ -79,7 +79,7 @@ namespace myPascal
                     _lex.GetLexem().Value == Pascal.keyUntil)
                     break;
                 seq.Statements.Add(ParseStatement());
-            } while (RequireWithoutThrows(Pascal.sepStatement.ToString()));
+            } while (RequireWithoutThrows(Pascal.sepSemicolon.ToString()));
             return seq;
         }
         
@@ -247,11 +247,16 @@ namespace myPascal
                     }
                     Require(Pascal.sepColon.ToString());
                     caseNode.Cases.Add((caseLabelList, ParseStatement()));
-                } while (RequireWithoutThrows(Pascal.sepStatement.ToString()) &&
+                } while (RequireWithoutThrows(Pascal.sepSemicolon.ToString()) &&
                          _lex.GetLexem().Value != Pascal.keyEnd);
                 Require(Pascal.keyEnd);
                 return caseNode;
             }
+
+            if (_lex.GetLexem().Value == Pascal.sepSemicolon.ToString())
+            {
+                return new EmptyStatement();
+            } 
 
             throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +
                                 $"Fatal: Unexpected lexem {_lex.GetLexem().Value}");

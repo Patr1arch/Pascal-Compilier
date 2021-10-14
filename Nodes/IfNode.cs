@@ -9,7 +9,7 @@
         public IfNode(Node cnd)
         {
             Condition = cnd;
-            ElseStmt = new EmptyExpr();
+            ElseStmt = new EmptyStatement();
         }
 
         public override string Print(int depth = 0)

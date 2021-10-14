@@ -1,6 +1,6 @@
 ﻿namespace myPascal.Nodes
 {
-    public class EmptyExpr : Node
+    public class EmptyStatement : Node
     {
         public override string Print(int depth = 0)
         {

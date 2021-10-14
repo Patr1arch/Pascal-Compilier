@@ -30,7 +30,7 @@ namespace myPascal
 
         public static string programKey = "program";
 
-        public static char sepStatement = ';';
+        public static char sepSemicolon = ';';
 
         public static string opAssign = ":=";
 
@@ -90,7 +90,7 @@ namespace myPascal
         {
             sepLBracket,
             sepRBracket,
-            sepStatement,
+            sepSemicolon,
             '(',
             ')',
             sepColon,
