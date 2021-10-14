@@ -86,6 +86,10 @@ namespace myPascal
 
         public static string opMemoryAdress = "@";
 
+        public static string keyFalse = "false";
+
+        public static string keyTrue = "true";
+
         public static List<char> Separators = new List<char>
         {
             sepLBracket,
@@ -140,7 +144,7 @@ namespace myPascal
                 "double",
                 keyElse,
                 keyEnd,
-                "false",
+                keyFalse,
                 keyIf,
                 "int64",
                 "longint",
@@ -156,7 +160,7 @@ namespace myPascal
                 "single",
                 "smallint",
                 keyThen,
-                "true",
+                keyTrue,
                 "uint64",
                 keyUntil,
                 keyWhile,

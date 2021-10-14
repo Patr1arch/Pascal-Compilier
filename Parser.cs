@@ -40,7 +40,7 @@ namespace myPascal
         }
         
         // Same logic but without throwing excepctions and return value
-        public bool RequireWithoutThrows(string lexemName)
+        public bool Ask(string lexemName)
         {
             if (_lex.GetLexem().Value.ToLower() == lexemName)
             {
@@ -50,7 +50,18 @@ namespace myPascal
 
             return false;
         }
-        
+
+        public bool Ask(List<string> lst)
+        {
+            foreach (var str in lst)
+            {
+                if (Ask(str))
+                    return true;
+            }
+
+            return false;
+        }
+
 
         public Node ParseProgram()
         {
@@ -79,7 +90,7 @@ namespace myPascal
                     _lex.GetLexem().Value == Pascal.keyUntil)
                     break;
                 seq.Statements.Add(ParseStatement());
-            } while (RequireWithoutThrows(Pascal.sepSemicolon.ToString()));
+            } while (Ask(Pascal.sepSemicolon.ToString()));
             return seq;
         }
         
@@ -102,12 +113,10 @@ namespace myPascal
                 specialNode = ParseArrayAccess(ident);
             }
 
-            if (_lex.GetLexem().Value == Pascal.opCaret)
+            if (Ask(Pascal.opCaret))
             {
-                _lex.NextLexem();
-                if (_lex.GetLexem().Value == Pascal.sepDot.ToString())
+                if (Ask(Pascal.sepDot.ToString()))
                 {
-                    _lex.NextLexem();
                     if (_lex.GetLexem() is Identifier)
                         return  new RecordFieldAccessNode(new PointerNode(ident), ParseVariable());
                     else throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +
@@ -116,9 +125,8 @@ namespace myPascal
                 return new PointerNode(specialNode ?? ident);
             }
             
-            if (_lex.GetLexem().Value == Pascal.sepDot.ToString())
+            if (Ask(Pascal.sepDot.ToString()))
             {
-                _lex.NextLexem();
                 if (_lex.GetLexem() is Identifier)
                     return new RecordFieldAccessNode(ident, ParseVariable());
                 else throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +
@@ -133,9 +141,8 @@ namespace myPascal
             if (_lex.GetLexem() is Identifier)
             {
                 Node ident = ParseVariable();
-                if (_lex.GetLexem().Value == Pascal.opAssign) // It's assign statement
+                if (Ask(Pascal.opAssign)) // It's assign statement
                 {
-                    _lex.NextLexem();
                     //if (_lex.GetLexem().Value == Pascal.sepLBracket.ToString())
                     //    return new AssignStatement(ParseArrayAccess(ident), ParseExpr());
                     return new AssignStatement(ident, ParseExpr());
@@ -146,49 +153,44 @@ namespace myPascal
                 }
             }
 
-            if (_lex.GetLexem().Value == Pascal.keyBegin)
+            if (Ask(Pascal.keyBegin))
             {
-                _lex.NextLexem();
                 var stmt = ParseStatementSequence();
                 Require(Pascal.keyEnd);
                 return stmt;
             }
 
-            if (_lex.GetLexem().Value == Pascal.keyWhile)
+            if (Ask(Pascal.keyWhile))
             {
-                _lex.NextLexem();
                 var whileNode = new WhileNode(ParseExpr());
                 Require(Pascal.keyDo);
                 whileNode.Body = ParseStatement();
                 return whileNode;
             }
 
-            if (_lex.GetLexem().Value == Pascal.keyRepeat)
+            if (Ask(Pascal.keyRepeat))
             {
-                _lex.NextLexem();
                 var repeatNode = new RepeatNode(ParseStatementSequence()); // ParseStatementSequence() ?
                 Require(Pascal.keyUntil);
                 repeatNode.UntilCondition = ParseExpr();
                 return repeatNode;
             }
 
-            if (_lex.GetLexem().Value == Pascal.keyFor)
+            if (Ask(Pascal.keyFor))
             {
-                _lex.NextLexem();
                 if (_lex.GetLexem() is Identifier)
                 {
                     var forNode = new ForNode(_lex.GetLexem());
                     _lex.NextLexem();
                     Require(Pascal.opAssign);
                     forNode.InitialExpr = ParseExpr();
-                    if (_lex.GetLexem().Value == Pascal.keyTo)
+                    if (Ask(Pascal.keyTo))
                         forNode.IsTo = true;
-                    else if (_lex.GetLexem().Value == Pascal.keyDownto)
+                    else if (Ask(Pascal.keyDownto))
                         forNode.IsTo = false;
                     else throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +
                                                    $"Fatal: Syntax error, \"{Pascal.lexRParent}\" expected but " +
                                                    $"{_lex.GetLexem().SourceCode} found");
-                    _lex.NextLexem();
                     forNode.FinalExpr = ParseExpr();
                     Require(Pascal.keyDo);
                     forNode.Body = ParseStatement();
@@ -199,24 +201,18 @@ namespace myPascal
                                     $"Fatal: Expected variable identifier");
             }
 
-            if (_lex.GetLexem().Value == Pascal.keyIf)
+            if (Ask(Pascal.keyIf))
             {
-                _lex.NextLexem();
                 var ifNode = new IfNode(ParseExpr());
                 Require(Pascal.keyThen);
                 ifNode.ThenStmt = ParseStatement();
-                if (_lex.GetLexem().Value == Pascal.keyElse)
-                {
-                    _lex.NextLexem();
+                if (Ask(Pascal.keyElse))
                     ifNode.ElseStmt = ParseStatement();
-                }
-
                 return ifNode;
             }
 
-            if (_lex.GetLexem().Value == Pascal.keyCase)
+            if (Ask(Pascal.keyCase))
             {
-                _lex.NextLexem();
                 var caseNode = new CaseNode(ParseExpr());
                 Require(Pascal.keyOf);
                 do
@@ -247,13 +243,13 @@ namespace myPascal
                     }
                     Require(Pascal.sepColon.ToString());
                     caseNode.Cases.Add((caseLabelList, ParseStatement()));
-                } while (RequireWithoutThrows(Pascal.sepSemicolon.ToString()) &&
+                } while (Ask(Pascal.sepSemicolon.ToString()) &&
                          _lex.GetLexem().Value != Pascal.keyEnd);
                 Require(Pascal.keyEnd);
                 return caseNode;
             }
 
-            if (_lex.GetLexem().Value == Pascal.sepSemicolon.ToString())
+            if (Ask(Pascal.sepSemicolon.ToString()))
             {
                 return new EmptyStatement();
             } 
@@ -265,11 +261,10 @@ namespace myPascal
         public Node ParseCallable(Node ident)
         {
             var callNode = new CallNode(ident);
-            if (_lex.GetLexem().Value == Pascal.lexLParent)
+            if (Ask(Pascal.lexLParent))
             {
-                _lex.NextLexem();
                 int count = 0;
-                while (!RequireWithoutThrows(Pascal.lexRParent) && !_lex.IsEOFReached)
+                while (!Ask(Pascal.lexRParent) && !_lex.IsEOFReached)
                 {
                     if (count++ != 0)
                         Require(Pascal.sepComma.ToString());
@@ -299,7 +294,7 @@ namespace myPascal
             do
             {
                 arr.Indexes.Add(ParseExpr());
-            } while (RequireWithoutThrows(Pascal.sepComma.ToString()) &&
+            } while (Ask(Pascal.sepComma.ToString()) &&
                      _lex.GetLexem().Value != Pascal.sepRBracket.ToString());
             Require(Pascal.sepRBracket.ToString());
             return arr;
@@ -309,9 +304,8 @@ namespace myPascal
         {
             Node left = ParseSimpleExpr();
             AbstractLexem rop = _lex.GetLexem();
-            if (Pascal.RelationalOperators.Contains(rop.Value) || rop.Value == Pascal.keyIn)
+            if (Ask(Pascal.RelationalOperators) || Ask(Pascal.keyIn))
             {
-                _lex.NextLexem();
                 return new BinOpNode(left, rop, ParseSimpleExpr());
             }
 
@@ -323,16 +317,12 @@ namespace myPascal
             // TODO: What todo with +1 - -1 ?
             var posUnary = _lex.GetLexem();
             Node left = null;
-            if (posUnary.Value == Pascal.opPlus || posUnary.Value == Pascal.opMinus || posUnary.Value == Pascal.opMemoryAdress)
-            {
-                _lex.NextLexem();
+            if (Ask(Pascal.opPlus) || Ask(Pascal.opMinus) || Ask(Pascal.opMemoryAdress))
                 left = new UnaryOpNode(posUnary, ParseTerm());
-            }
             else left = ParseTerm();
             AbstractLexem op = _lex.GetLexem();
-            while (op.Value == Pascal.opPlus || op.Value == Pascal.opMinus || op.Value == Pascal.keyOr)
+            while (Ask(Pascal.opPlus) || Ask(Pascal.opMinus) || Ask(Pascal.keyOr))
             {
-                _lex.NextLexem();
                 Node right = ParseTerm(); 
                 left = new BinOpNode(left, op, right);
                 op = _lex.GetLexem();
@@ -345,13 +335,12 @@ namespace myPascal
         {
             var left = ParseFactor();
             AbstractLexem op = _lex.GetLexem();
-            while (op.Value == Pascal.opMult || 
-                op.Value == Pascal.opDiv || 
-                op.Value == Pascal.opIntDiv || 
-                op.Value == Pascal.opMod ||
-                op.Value == Pascal.keyAnd)
+            while (Ask(Pascal.opMult) || 
+                Ask(Pascal.opDiv) || 
+                Ask(Pascal.opIntDiv) || 
+                Ask(Pascal.opMod) ||
+                Ask(Pascal.keyAnd))
             {
-                _lex.NextLexem();
                 Node right = ParseFactor();
                 left = new BinOpNode(left, op, right);
                 op = _lex.GetLexem();
@@ -364,18 +353,19 @@ namespace myPascal
         {
             var l = _lex.GetLexem();
             _lex.NextLexem();
-            if (l is AbstractIdentifier) // true, false is keywords
+            if (l is Identifier || l.Value == Pascal.keyTrue || l.Value == Pascal.keyFalse)
             {
-                if (l.Value == Pascal.keyNil)
-                    return new NilNode(l);
-                if (l.Value == Pascal.keyNot)
-                    return new UnaryOpNode(l, ParseFactor()); // Not factor?
                 if (_lex.GetLexem().Value == Pascal.lexLParent) // Callable Node
                     return ParseCallable(new IdentNode(l));
                 if (_lex.GetLexem().Value == Pascal.sepLBracket.ToString())
                     return ParseArrayAccess(new IdentNode(l));
                 return ParseVariable(new IdentNode(l));
             }
+            
+            if (l.Value == Pascal.keyNil)
+                return new NilNode(l);
+            if (l.Value == Pascal.keyNot)
+                return new UnaryOpNode(l, ParseFactor());
 
             if (l is IntegerLiteral)
             {
@@ -390,13 +380,7 @@ namespace myPascal
             if (l.Value == Pascal.lexLParent)
             {
                 Node e = ParseExpr();
-                if (_lex.GetLexem().Value != Pascal.lexRParent) // Require
-                {
-                    throw new Exception($"{_lex.FilePath}{l.Coordinates} " +
-                                        $"Fatal: Syntax error, \"{Pascal.lexRParent}\" expected but {_lex.GetLexem().SourceCode} found");
-                }
-                _lex.NextLexem();
-
+                Require(Pascal.lexRParent);
                 return e;
             }
     

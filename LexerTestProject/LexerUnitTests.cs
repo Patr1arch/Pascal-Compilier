@@ -482,8 +482,8 @@ namespace LexerTestProject
                 Lexer lex = new Lexer("TestPascalFiles\\ProblemWithRParent.pas");
                 Parser parser = new Parser(lex);
                 Exception e = Assert.Throws<Exception>(() => parser.ParseExpr());
-                Assert.AreEqual(e.Message, "TestPascalFiles\\ProblemWithRParent.pas(1, 1) " +
-                                           $"Fatal: Syntax error, \"{Pascal.lexRParent}\" expected but 2 found");
+                Assert.AreEqual(e.Message, "TestPascalFiles\\ProblemWithRParent.pas(1, 8) " +
+                                           $"Fatal: Unexpected lexem 2");
             }
             
             [Test]
