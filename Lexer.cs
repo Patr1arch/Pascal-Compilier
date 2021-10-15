@@ -280,37 +280,37 @@ namespace myPascal
             stringLiteral.SourceCode += "\'"; // TODO Redefine setters for SourceCode/Value except Integer and Real
             stringLiteral.Value += "\'";
             // invariant: we get lexem/word and next symbol
-            var currSym = '\0';
-            while ((currSym = (char) _stream.Read()) != '\n')
+            var currSym = _buffer;
+            while ((currSym = (char) _stream.Read()) != '\n' && !IsEOFReached)
             {
-                if (currSym == Pascal.apostrophe && _stream.Peek() == Pascal.hash)
-                {
-                    _stream.Read();
-                    _currentSymbolNumber += 2;
-                    stringLiteral.SourceCode += "'";
-                    stringLiteral.Combine(HandleControlString());
-                    stringLiteral.Value += "'";
-                    break;
-                }
-
-                if (currSym == Pascal.apostrophe && _stream.Peek() == Pascal.apostrophe)
-                {
-                    _buffer = currSym;
-                    stringLiteral.Value += Pascal.apostrophe;
-                    stringLiteral.SourceCode += "''";
-                    _currentSymbolNumber += 2;
-                    _stream.Read();
-                    continue;
-                }
-
                 if (currSym == Pascal.apostrophe)
                 {
-                    stringLiteral.Value += currSym;
-                    stringLiteral.SourceCode += currSym;
+                    _buffer = currSym;
                     _currentSymbolNumber++;
-                    break;
+                    stringLiteral.SourceCode += Pascal.apostrophe;
+                    if (_stream.Peek() == Pascal.hash)
+                    {
+                        _stream.Read();
+                        _currentSymbolNumber++;
+                        stringLiteral.Combine(HandleControlString());
+                        stringLiteral.Value += Pascal.apostrophe;
+                        break;
+                    }
+                    else if (_stream.Peek() == Pascal.apostrophe)
+                    {
+                        stringLiteral.Value += Pascal.apostrophe;
+                        stringLiteral.SourceCode += Pascal.apostrophe;
+                        _currentSymbolNumber++;
+                        _stream.Read();
+                        continue;
+                    }
+                    else
+                    {
+                        stringLiteral.Value += Pascal.apostrophe;
+                        break;
+                    }
                 }
-                    
+
                 _buffer = currSym;
                 stringLiteral.Value += _buffer;
                 stringLiteral.SourceCode += _buffer;
@@ -329,10 +329,9 @@ namespace myPascal
 
         public StringLiteral HandleControlString()
         {
-            
             StringLiteral lexem = new StringLiteral(_currentStringNumber, _currentSymbolNumber);
             lexem.SourceCode += Pascal.hash.ToString();
-            var currSym = '\0';
+            var currSym = _buffer;
             while (char.IsDigit(currSym = (char) _stream.Read()))
             {
                 _buffer = currSym;
