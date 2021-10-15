@@ -416,7 +416,7 @@ namespace LexerTestProject
         [Test]
         public void ControlStrings()
         {
-            Lexer testLexer = new Lexer("TestPascalFiles\\ControlStrings.pas");
+            Lexer testLexer = new Lexer("TestPascalFiles\\SpecialStrings.pas");
             testLexer.NextLexem();
             Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:1\tType: " +
                                                       "StringLiteral\tSource Code: #50\tValue: \"2\"");
@@ -426,6 +426,16 @@ namespace LexerTestProject
             testLexer.NextLexem();
             Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:7\tType: " +
                                                       "StringLiteral\tSource Code: #0\tValue: \"\0\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 2:1\tType: " +
+                                                      "StringLiteral\t" +
+                                                      "Source Code: 'I am ''quoted'' string!'\t" +
+                                                      "Value: \"'I am 'quoted' string!'\"");
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 3:1\tType: " +
+                                                      "StringLiteral\t" +
+                                                      "Source Code: 'aba \\n'#10\t" +
+                                                      "Value: \"'aba \\n\n'\"");
         }
 
 

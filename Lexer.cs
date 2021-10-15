@@ -210,53 +210,16 @@ namespace myPascal
             }
             else if (currSym == Pascal.apostrophe)
             {
-                StringLiteral stringLiteral = new StringLiteral(_currentStringNumber, _currentSymbolNumber);
-                stringLiteral.SourceCode += currSym; // TODO Redefine setters for SourceCode/Value except Integer and Real
-                stringLiteral.Value += currSym;
-                // invariant: we get lexem/word and next symbol
-                while ((currSym = (char) _stream.Read()) != Pascal.apostrophe)
-                {
-                    if (_stream.EndOfStream || currSym == '\n')
-                    {
-                        throw new Exception($"{_filePath}{stringLiteral.Coordinates} " +
-                                            $"Fatal: String exceeds line");
-                    }
-                    _buffer = currSym;
-                    stringLiteral.Value += _buffer;
-                    stringLiteral.SourceCode += _buffer;
-                    _currentSymbolNumber++;
-                }
-                if (currSym == '\n')
-                    throw new Exception($"{_filePath}{stringLiteral.Coordinates} " +
-                                        $"Fatal: String exceeds line");
-                
-                stringLiteral.Value += currSym;
-                stringLiteral.SourceCode += currSym;
-                _currentSymbolNumber++;
-                    
-                // To satisfy common invariant
-                currSym = (char) _stream.Read(); // TODO: Optimize this calls if possible
+                StringLiteral stringLiteral = HandleQuotedString();
+                currSym = _buffer;
 
                 _currentLexem = stringLiteral;
             }
             else if (currSym == Pascal.hash)
             {
-                StringLiteral lexem = new StringLiteral(_currentStringNumber, _currentSymbolNumber);
-                lexem.SourceCode += currSym;
-                while (char.IsDigit(currSym = (char) _stream.Read()))
-                {
-                    if (IsEOFReached)
-                        throw new Exception($"{_filePath}{lexem.Coordinates} " +
-                                            $"Fatal: String exceeds line");
-                    _buffer = currSym;
-                    lexem.SourceCode += _buffer;
-                    _currentSymbolNumber++;
-                }
-                if (lexem.SourceCode.Length == 1) // Only # without numbers
-                    throw new Exception($"{_filePath}{lexem.Coordinates} " +
-                                        $"Fatal: '#' lexem must has integer value");
-                lexem.Value = Convert.ToChar(Convert.ToInt16(lexem.SourceCode.Substring(1))).ToString();
+                var lexem = HandleControlString();
 
+                currSym = _buffer;
                 _currentLexem = lexem;
             }
             else if (Pascal.Separators.Contains(currSym))
@@ -311,9 +274,79 @@ namespace myPascal
             _currentSymbolNumber++;
         }
 
-        public string HandleQuotedString(StringLiteral stringLiteral)
+        public StringLiteral HandleQuotedString()
         {
-            return "";
+            var stringLiteral = new StringLiteral(_currentStringNumber, _currentSymbolNumber);
+            stringLiteral.SourceCode += "\'"; // TODO Redefine setters for SourceCode/Value except Integer and Real
+            stringLiteral.Value += "\'";
+            // invariant: we get lexem/word and next symbol
+            var currSym = '\0';
+            while ((currSym = (char) _stream.Read()) != '\n')
+            {
+                if (currSym == Pascal.apostrophe && _stream.Peek() == Pascal.hash)
+                {
+                    _stream.Read();
+                    _currentSymbolNumber += 2;
+                    stringLiteral.SourceCode += "'";
+                    stringLiteral.Combine(HandleControlString());
+                    stringLiteral.Value += "'";
+                    break;
+                }
+
+                if (currSym == Pascal.apostrophe && _stream.Peek() == Pascal.apostrophe)
+                {
+                    _buffer = currSym;
+                    stringLiteral.Value += Pascal.apostrophe;
+                    stringLiteral.SourceCode += "''";
+                    _currentSymbolNumber += 2;
+                    _stream.Read();
+                    continue;
+                }
+
+                if (currSym == Pascal.apostrophe)
+                {
+                    stringLiteral.Value += currSym;
+                    stringLiteral.SourceCode += currSym;
+                    _currentSymbolNumber++;
+                    break;
+                }
+                    
+                _buffer = currSym;
+                stringLiteral.Value += _buffer;
+                stringLiteral.SourceCode += _buffer;
+                _currentSymbolNumber++;
+            }
+            if (currSym == '\n')
+                throw new Exception($"{_filePath}{stringLiteral.Coordinates} " +
+                                    $"Fatal: String exceeds line");
+
+            // To satisfy common invariant
+            currSym = (char) _stream.Read(); // TODO: Optimize this calls if possible
+
+            _buffer = currSym;
+            return stringLiteral;
+        }
+
+        public StringLiteral HandleControlString()
+        {
+            
+            StringLiteral lexem = new StringLiteral(_currentStringNumber, _currentSymbolNumber);
+            lexem.SourceCode += Pascal.hash.ToString();
+            var currSym = '\0';
+            while (char.IsDigit(currSym = (char) _stream.Read()))
+            {
+                _buffer = currSym;
+                lexem.SourceCode += _buffer;
+                _currentSymbolNumber++;
+            }
+            if (lexem.SourceCode.Length == 1) // Only # without numbers
+                throw new Exception($"{_filePath}{lexem.Coordinates} " +
+                                    $"Fatal: '#' lexem must has integer value");
+            lexem.Value = Convert.ToChar(Convert.ToInt16(lexem.SourceCode.Substring(1))).ToString();
+
+            _buffer = currSym;
+            
+            return lexem;
         }
 
         public string GetLexemName()
