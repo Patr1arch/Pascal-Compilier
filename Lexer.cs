@@ -347,6 +347,11 @@ namespace myPascal
             {
                 lexem.Combine(HandleQuotedString());
             }
+
+            if (currSym == Pascal.hash)
+            {
+                lexem.Combine(HandleControlString());
+            }
             
             return lexem;
         }

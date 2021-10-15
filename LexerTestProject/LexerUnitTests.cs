@@ -419,13 +419,7 @@ namespace LexerTestProject
             Lexer testLexer = new Lexer("TestPascalFiles\\SpecialStrings.pas");
             testLexer.NextLexem();
             Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:1\tType: " +
-                                                      "StringLiteral\tSource Code: #50\tValue: \"'2'\"");
-            testLexer.NextLexem();
-            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:4\tType: " +
-                                                      "StringLiteral\tSource Code: #10\tValue: \"'\n'\"");
-            testLexer.NextLexem();
-            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:7\tType: " +
-                                                      "StringLiteral\tSource Code: #0\tValue: \"'\0'\"");
+                                                      "StringLiteral\tSource Code: #50#10#0\tValue: \"'2\n\0'\"");
             testLexer.NextLexem();
             Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 2:1\tType: " +
                                                       "StringLiteral\t" +
@@ -442,6 +436,18 @@ namespace LexerTestProject
                                                       "StringLiteral\t" +
                                                       "Source Code: #9'\\t is tab'\t" +
                                                       "Value: \"'\t\\t is tab'\"");
+            
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 5:1\tType: " +
+                                                      "StringLiteral\t" +
+                                                      "Source Code: 'A tabulator character: '#9' is easy to embed'\t" +
+                                                      "Value: \"'A tabulator character: \t is easy to embed'\"");
+            
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 6:1\tType: " +
+                                                      "StringLiteral\t" +
+                                                      "Source Code: 'the string starts here'#13#10'   and continues here'\t" +
+                                                      "Value: \"'the string starts here\r\n   and continues here'\"");
         }
 
 
