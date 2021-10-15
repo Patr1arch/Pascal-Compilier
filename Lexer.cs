@@ -10,7 +10,7 @@ namespace myPascal
 {
     public class Lexer
     {
-        private readonly StreamReader _stream; // File?
+        private StreamReader _stream; // File?
         private char _buffer;
         private int _currentStringNumber;
         private int _currentSymbolNumber;
@@ -18,7 +18,16 @@ namespace myPascal
         private string _filePath;
 
         public string FilePath => _filePath;
-        public Lexer(string filePath)
+        public Lexer(string filePath = "")
+        {
+            _stream = filePath != "" ? new StreamReader(filePath) : null;
+            _currentStringNumber = 1;
+            _currentSymbolNumber = 0;
+            _buffer = ' ';
+            _filePath = filePath;
+        }
+
+        public void SetFilePath(string filePath)
         {
             _stream = new StreamReader(filePath);
             _currentStringNumber = 1;
@@ -364,6 +373,12 @@ namespace myPascal
         public AbstractLexem GetLexem()
         {
             return _currentLexem;
+        }
+
+        public AbstractLexem GetNextLexem()
+        {
+            NextLexem();
+            return GetLexem();
         }
 
         public bool IsEOFReached => _stream.EndOfStream;

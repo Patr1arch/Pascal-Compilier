@@ -9,7 +9,13 @@ namespace myPascal
     {
         private Lexer _lex;
 
-        public Parser(Lexer lex)
+        public Parser(Lexer lex = null)
+        {
+            _lex = lex;
+            _lex?.NextLexem();
+        }
+
+        public void SetParser(Lexer lex)
         {
             _lex = lex;
             _lex.NextLexem();
