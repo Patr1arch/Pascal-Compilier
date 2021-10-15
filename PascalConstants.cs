@@ -94,6 +94,8 @@ namespace myPascal
 
         public static string keyTrue = "true";
 
+        public static char endOfFile = Char.MaxValue;
+
         public static List<char> Separators = new List<char>
         {
             sepLBracket,

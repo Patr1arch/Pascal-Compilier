@@ -211,14 +211,14 @@ namespace myPascal
             else if (currSym == Pascal.apostrophe)
             {
                 StringLiteral stringLiteral = HandleQuotedString();
+                stringLiteral.Value = Pascal.apostrophe + stringLiteral.Value + Pascal.apostrophe;
                 currSym = _buffer;
-
                 _currentLexem = stringLiteral;
             }
             else if (currSym == Pascal.hash)
             {
                 var lexem = HandleControlString();
-
+                lexem.Value = Pascal.apostrophe + lexem.Value + Pascal.apostrophe;
                 currSym = _buffer;
                 _currentLexem = lexem;
             }
@@ -278,10 +278,9 @@ namespace myPascal
         {
             var stringLiteral = new StringLiteral(_currentStringNumber, _currentSymbolNumber);
             stringLiteral.SourceCode += "\'"; // TODO Redefine setters for SourceCode/Value except Integer and Real
-            stringLiteral.Value += "\'";
             // invariant: we get lexem/word and next symbol
             var currSym = _buffer;
-            while ((currSym = (char) _stream.Read()) != '\n' && !IsEOFReached)
+            while ((currSym = (char) _stream.Read()) != '\n' && currSym != Pascal.endOfFile)
             {
                 if (currSym == Pascal.apostrophe)
                 {
@@ -293,7 +292,6 @@ namespace myPascal
                         _stream.Read();
                         _currentSymbolNumber++;
                         stringLiteral.Combine(HandleControlString());
-                        stringLiteral.Value += Pascal.apostrophe;
                         break;
                     }
                     else if (_stream.Peek() == Pascal.apostrophe)
@@ -306,7 +304,6 @@ namespace myPascal
                     }
                     else
                     {
-                        stringLiteral.Value += Pascal.apostrophe;
                         break;
                     }
                 }
@@ -338,12 +335,18 @@ namespace myPascal
                 lexem.SourceCode += _buffer;
                 _currentSymbolNumber++;
             }
+            
             if (lexem.SourceCode.Length == 1) // Only # without numbers
                 throw new Exception($"{_filePath}{lexem.Coordinates} " +
                                     $"Fatal: '#' lexem must has integer value");
             lexem.Value = Convert.ToChar(Convert.ToInt16(lexem.SourceCode.Substring(1))).ToString();
 
             _buffer = currSym;
+            
+            if (currSym == Pascal.apostrophe)
+            {
+                lexem.Combine(HandleQuotedString());
+            }
             
             return lexem;
         }

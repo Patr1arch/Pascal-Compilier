@@ -419,13 +419,13 @@ namespace LexerTestProject
             Lexer testLexer = new Lexer("TestPascalFiles\\SpecialStrings.pas");
             testLexer.NextLexem();
             Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:1\tType: " +
-                                                      "StringLiteral\tSource Code: #50\tValue: \"2\"");
+                                                      "StringLiteral\tSource Code: #50\tValue: \"'2'\"");
             testLexer.NextLexem();
             Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:4\tType: " +
-                                                      "StringLiteral\tSource Code: #10\tValue: \"\n\"");
+                                                      "StringLiteral\tSource Code: #10\tValue: \"'\n'\"");
             testLexer.NextLexem();
             Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 1:7\tType: " +
-                                                      "StringLiteral\tSource Code: #0\tValue: \"\0\"");
+                                                      "StringLiteral\tSource Code: #0\tValue: \"'\0'\"");
             testLexer.NextLexem();
             Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 2:1\tType: " +
                                                       "StringLiteral\t" +
@@ -436,6 +436,12 @@ namespace LexerTestProject
                                                       "StringLiteral\t" +
                                                       "Source Code: 'aba \\n'#10\t" +
                                                       "Value: \"'aba \\n\n'\"");
+            
+            testLexer.NextLexem();
+            Assert.AreEqual(testLexer.GetLexemName(), "Coordinates: 4:1\tType: " +
+                                                      "StringLiteral\t" +
+                                                      "Source Code: #9'\\t is tab'\t" +
+                                                      "Value: \"'\t\\t is tab'\"");
         }
 
 
