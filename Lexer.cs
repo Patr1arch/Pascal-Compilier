@@ -180,13 +180,13 @@ namespace myPascal
                 else
                     _currentLexem = new IntegerLiteral(literal);
             }
-            else if (char.IsLetter(currSym))
+            else if (char.IsLetter(currSym) || currSym == Pascal.lexUnderscore)
             {
                 AbstractIdentifier identifier = new AbstractIdentifier(_currentStringNumber, _currentSymbolNumber);
                 identifier.Value += currSym;
                 identifier.SourceCode += currSym;
                 // invariant: we get lexem and the next symbol
-                while(char.IsLetterOrDigit(currSym = (char)_stream.Read()))
+                while(char.IsLetterOrDigit(currSym = (char)_stream.Read()) || currSym == Pascal.lexUnderscore)
                 {
                     _buffer = currSym;
                     identifier.Value += _buffer;

@@ -36,7 +36,6 @@ namespace myPascal
         
         public void Require(Type lexemType)
         {
-            // TODO: What about _ ?
             if (_lex.GetLexem().GetType() != lexemType)
             {
                 throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +

@@ -96,6 +96,8 @@ namespace myPascal
 
         public static char endOfFile = Char.MaxValue;
 
+        public static char lexUnderscore = '_';
+
         public static List<char> Separators = new List<char>
         {
             sepLBracket,
