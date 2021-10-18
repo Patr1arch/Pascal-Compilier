@@ -186,8 +186,7 @@ namespace myPascal
             {
                 if (_lex.GetLexem() is Identifier)
                 {
-                    var forNode = new ForNode(_lex.GetLexem());
-                    _lex.NextLexem();
+                    var forNode = new ForNode(ParseVariable());
                     Require(Pascal.opAssign);
                     forNode.InitialExpr = ParseExpr();
                     if (Ask(Pascal.keyTo))
@@ -195,7 +194,7 @@ namespace myPascal
                     else if (Ask(Pascal.keyDownto))
                         forNode.IsTo = false;
                     else throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +
-                                                   $"Fatal: Syntax error, \"{Pascal.lexRParent}\" expected but " +
+                                                   $"Fatal: Syntax error, \"{Pascal.keyTo} or {Pascal.keyDownto}\" expected but " +
                                                    $"{_lex.GetLexem().SourceCode} found");
                     forNode.FinalExpr = ParseExpr();
                     Require(Pascal.keyDo);

@@ -1,6 +1,10 @@
-a
-10
-20
-writeln
-	'value of a: '
-	a
+for
+	:=
+		a
+		10
+	to
+		20
+	do
+		writeln
+			'value of a: '
+			a
