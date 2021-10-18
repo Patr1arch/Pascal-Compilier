@@ -1,0 +1,1 @@
+TestPascalFiles\Lexer\In\InvalidCharInComm.pas(2, 5) Fatal: Detected invalid character

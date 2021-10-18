@@ -1,5 +1,0 @@
-$DEADBEEF
-$DEAD
-$beef
-%00000
-%10101

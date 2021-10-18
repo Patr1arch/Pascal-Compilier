@@ -1,0 +1,8 @@
+Coordinates: 1:1	Type: Operator	Source Code: -	Value: "-"
+Coordinates: 2:1	Type: Operator	Source Code: +	Value: "+"
+Coordinates: 3:1	Type: Operator	Source Code: <<	Value: "<<"
+Coordinates: 4:1	Type: Operator	Source Code: +	Value: "+"
+Coordinates: 4:2	Type: Operator	Source Code: +	Value: "+"
+Coordinates: 4:3	Type: Operator	Source Code: +	Value: "+"
+Coordinates: 4:4	Type: Operator	Source Code: +	Value: "+"
+Coordinates: 4:5	Type: Operator	Source Code: +	Value: "+"

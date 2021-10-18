@@ -1,0 +1,1 @@
+TestPascalFiles\Parser\In\ProblemWithRParent.pas(4, 1) Fatal: Unexpected lexem end.

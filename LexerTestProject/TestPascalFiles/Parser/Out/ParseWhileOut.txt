@@ -1,0 +1,12 @@
+:=
+	a
+	true
+a
+:=
+	b
+	5
+writeln
+	b
+:=
+	a
+	false

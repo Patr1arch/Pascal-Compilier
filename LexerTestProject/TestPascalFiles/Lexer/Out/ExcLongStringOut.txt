@@ -1,0 +1,1 @@
+TestPascalFiles\Lexer\In\ExcLongString.pas(1, 1) Fatal: Length of identifier more than 255

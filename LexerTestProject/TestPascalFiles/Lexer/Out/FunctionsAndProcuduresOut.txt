@@ -1,0 +1,5 @@
+Coordinates: 3:1	Type: Keyword	Source Code: procedure	Value: "procedure"
+Coordinates: 3:11	Type: Identifier	Source Code: check	Value: "check"
+Coordinates: 3:16	Type: Separator	Source Code: (	Value: "("
+Coordinates: 3:17	Type: Keyword	Source Code: var	Value: "var"
+Coordinates: 7:1	Type: Keyword	Source Code: function	Value: "function"

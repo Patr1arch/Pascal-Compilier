@@ -1,0 +1,5 @@
+Coordinates: 1:1	Type: IntegerLiteral	Source Code: $DEADBEEF	Value: "3735928559"
+Coordinates: 2:1	Type: IntegerLiteral	Source Code: $DEAD	Value: "57005"
+Coordinates: 3:1	Type: IntegerLiteral	Source Code: $beef	Value: "48879"
+Coordinates: 4:1	Type: IntegerLiteral	Source Code: %00000	Value: "0"
+Coordinates: 5:1	Type: IntegerLiteral	Source Code: %10101	Value: "21"

@@ -1,0 +1,3 @@
+Coordinates: 1:1	Type: Keyword	Source Code: program	Value: "program"
+Coordinates: 1:9	Type: Identifier	Source Code: Hello	Value: "Hello"
+Coordinates: 1:9	Type: Identifier	Source Code: Hello	Value: "Hello"

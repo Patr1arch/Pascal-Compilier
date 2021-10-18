@@ -1,0 +1,6 @@
+Coordinates: 1:1	Type: StringLiteral	Source Code: #50	Value: "'2'"
+Coordinates: 2:1	Type: StringLiteral	Source Code: 'I am ''quoted'' string!'	Value: "'I am 'quoted' string!'"
+Coordinates: 3:1	Type: StringLiteral	Source Code: 'aba \t'#9	Value: "'aba \t	'"
+Coordinates: 4:1	Type: StringLiteral	Source Code: #9'\t is tab'	Value: "'	\t is tab'"
+Coordinates: 5:1	Type: StringLiteral	Source Code: 'A tabulator character: '#9' is easy to embed'	Value: "'A tabulator character: 	 is easy to embed'"
+Coordinates: 6:1	Type: StringLiteral	Source Code: 'the string starts here'#9'	and continues here'	Value: "'the string starts here		and continues here'"

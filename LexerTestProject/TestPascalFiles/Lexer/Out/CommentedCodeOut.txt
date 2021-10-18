@@ -1,0 +1,7 @@
+Coordinates: 12:1	Type: Keyword	Source Code: program	Value: "program"
+Coordinates: 12:9	Type: Identifier	Source Code: Hello	Value: "Hello"
+Coordinates: 14:1	Type: Identifier	Source Code: prog	Value: "prog"
+Coordinates: 15:1	Type: Keyword	Source Code: program	Value: "program"
+Coordinates: 15:9	Type: Identifier	Source Code: Hello	Value: "Hello"
+Coordinates: 17:1	Type: Keyword	Source Code: program	Value: "program"
+Coordinates: 18:7	Type: Identifier	Source Code: Hello	Value: "Hello"

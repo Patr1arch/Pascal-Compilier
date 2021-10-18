@@ -1,0 +1,1 @@
+Coordinates: 9:18	Type: Operator	Source Code: ..	Value: ".."

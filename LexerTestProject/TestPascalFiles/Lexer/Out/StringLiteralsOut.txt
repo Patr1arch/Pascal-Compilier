@@ -1,0 +1,4 @@
+Coordinates: 7:10	Type: StringLiteral	Source Code: 'a'	Value: "'a'"
+Coordinates: 8:9	Type: StringLiteral	Source Code: 'A tabulator character: ??? is easy to embed and its not integer'	Value: "'A tabulator character: ??? is easy to embed and its not integer'"
+Coordinates: 9:11	Type: StringLiteral	Source Code: 'begin'	Value: "'begin'"
+TestPascalFiles\Lexer\In\StringLiterals.pas(10, 11) Fatal: String exceeds line

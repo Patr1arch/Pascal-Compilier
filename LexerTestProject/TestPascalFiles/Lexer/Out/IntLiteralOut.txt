@@ -1,0 +1,7 @@
+Coordinates: 1:1	Type: IntegerLiteral	Source Code: 123	Value: "123"
+Coordinates: 2:1	Type: IntegerLiteral	Source Code: 456	Value: "456"
+Coordinates: 3:1	Type: IntegerLiteral	Source Code: 7	Value: "7"
+Coordinates: 4:1	Type: IntegerLiteral	Source Code: 8	Value: "8"
+Coordinates: 5:1	Type: IntegerLiteral	Source Code: 90	Value: "90"
+Coordinates: 6:1	Type: IntegerLiteral	Source Code: 0001	Value: "1"
+Coordinates: 7:1	Type: IntegerLiteral	Source Code: 0000	Value: "0"

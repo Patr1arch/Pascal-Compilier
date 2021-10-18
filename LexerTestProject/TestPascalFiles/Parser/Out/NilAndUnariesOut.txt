@@ -1,0 +1,32 @@
+:=
+	loc
+	nil
+:=
+	chk
+	nil
+:=
+	b
+	not
+		a
+:=
+	b
+	and
+		not
+			b
+		true
+:=
+	b
+	not
+		or
+			>
+				10
+				a
+			>
+				a
+				5
+:=
+	ava
+	-
+		+
+			1
+		1
