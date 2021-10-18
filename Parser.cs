@@ -100,9 +100,9 @@ namespace myPascal
             return seq;
         }
         
-        public Node ParseVariable(IdentNode nd = null)
+        public Node ParseVariable(Node nd = null)
         {
-            IdentNode ident = null;
+            Node ident = null;
             
             if (nd != null)
             {
@@ -113,28 +113,31 @@ namespace myPascal
                 ident = new IdentNode(_lex.GetLexem());
                 _lex.NextLexem();
             }
+            
             Node specialNode = null;
             if (_lex.GetLexem().Value == Pascal.sepLBracket.ToString())
             {
-                specialNode = ParseArrayAccess(ident);
+                specialNode = ParseVariable(ParseArrayAccess(ident));
             }
+            else if (_lex.GetLexem().Value == Pascal.lexLParent)
+                specialNode = ParseVariable(ParseCallable(ident));
 
             if (Ask(Pascal.opCaret))
             {
                 if (Ask(Pascal.sepDot.ToString()))
                 {
                     if (_lex.GetLexem() is Identifier)
-                        return  new RecordFieldAccessNode(new PointerNode(ident), ParseVariable());
+                        return ParseVariable(new RecordFieldAccessNode(new PointerNode(ident), ParseVariable()));
                     else throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +
                                              $"Fatal: Expected record field identifier");
                 }
-                return new PointerNode(specialNode ?? ident);
+                return ParseVariable(new PointerNode(specialNode ?? ident));
             }
             
             if (Ask(Pascal.sepDot.ToString()))
             {
                 if (_lex.GetLexem() is Identifier)
-                    return new RecordFieldAccessNode(ident, ParseVariable());
+                    return ParseVariable(new RecordFieldAccessNode(ident, ParseVariable()));
                 else throw new Exception($"{_lex.FilePath}{_lex.GetLexem().Coordinates} " +
                                          $"Fatal: Expected record field identifier");
             }
@@ -146,16 +149,14 @@ namespace myPascal
         {
             if (_lex.GetLexem() is Identifier)
             {
-                Node ident = ParseVariable();
+                Node variable = ParseVariable();
                 if (Ask(Pascal.opAssign)) // It's assign statement
                 {
-                    //if (_lex.GetLexem().Value == Pascal.sepLBracket.ToString())
-                    //    return new AssignStatement(ParseArrayAccess(ident), ParseExpr());
-                    return new AssignStatement(ident, ParseExpr());
+                    return new AssignStatement(variable, ParseExpr());
                 }
                 else
                 {
-                    return ParseCallable(ident);
+                    return ParseCallable(variable);
                 }
             }
 
@@ -274,22 +275,11 @@ namespace myPascal
                 {
                     if (count++ != 0)
                         Require(Pascal.sepComma.ToString());
-                    // var lexem = _lex.GetLexem();
-                    // if (lexem is Identifier)
-                    // {
-                    //     _lex.NextLexem();
-                    //     if (_lex.GetLexem().Value == Pascal.lexLParent)
-                    //         callNode.Args.Add(ParseCallable(new IdentNode(lexem)));
-                    //     else 
-                    //         callNode.Args.Add(ParseVariable(new IdentNode(lexem)));
-                    // }
-                    //else
                     {
                         callNode.Args.Add(ParseExpr());
                     }
                 }
             }
-            
             return callNode;
         }
 

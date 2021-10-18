@@ -80,12 +80,15 @@ namespace LexerTestProject
                         _parser.SetParser(_lexer);
                         try
                         {
-                            Assert.AreEqual(_parser.ParseProgram().Print(), 
-                                outFile.ReadToEnd().Replace("\r\n", "\n"));
+                            var exp = _parser.ParseProgram().Print();
+                            var act = outFile.ReadToEnd().Replace("\r\n", "\n");
+                            Assert.AreEqual(exp, act, 
+                                $"In test file {filePath} \n in output {outFilePath} \n with epxected file \n" +
+                                $"{@exp} \n\n And actual file \n {@act}");
                         }
                         catch (Exception e)
                         {
-                            Assert.AreEqual(e.Message, outFile.ReadLine(), $"In test file {filePath} \n in output {outFilePath}");
+                            Assert.AreEqual(@e.Message, @outFile.ReadLine(), $"In test file {filePath} \n in output {outFilePath}");
                         }
                     }
                 }

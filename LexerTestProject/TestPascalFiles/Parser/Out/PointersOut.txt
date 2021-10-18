@@ -22,6 +22,13 @@ writeln
 			i
 	1
 :=
+	f
+		5
+		f
+			g
+				5
+	0
+:=
 	Book1
 		^
 			journal
