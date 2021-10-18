@@ -14,4 +14,5 @@ begin
    Book1.s^.a := @number.num.num;
    writeln('Number is: ', number);
    writeln('iptr     points to a value: ', iptr^);
+   f(__d_)^ := 4;
 end.

@@ -54,3 +54,8 @@ writeln
 	'iptr     points to a value: '
 	^
 		iptr
+:=
+	^
+		f
+			__d_
+	4

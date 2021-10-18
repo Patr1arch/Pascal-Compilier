@@ -15,7 +15,7 @@ namespace myPascal.Nodes
         {
             var res = "";
             foreach (Node nd in Statements)
-                res += nd.Print();
+                res += nd.Print(depth);
             return res;
         }
     }
