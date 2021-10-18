@@ -15,16 +15,16 @@ namespace myPascal.Nodes
 
         public override string Print(int depth = 0)
         {
-            var res = Expr.Print();
+            var res = base.Print(depth) + "case\n" + Expr.Print(depth + 1);
             foreach (var @case in Cases)
             {
                 var subRes = "";
                 foreach (var label in @case.Item1)
                 {
-                    subRes += label.Print(depth + 1);
+                    subRes += label.Print(depth + 2);
                 }
 
-                res += subRes + @case.Item2.Print(depth + 2);
+                res += subRes + @case.Item2.Print(depth + 3);
             }
 
             return res;

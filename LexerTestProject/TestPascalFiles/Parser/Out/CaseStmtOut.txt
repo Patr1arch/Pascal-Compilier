@@ -1,20 +1,21 @@
 :=
 	grade
 	'A'
-grade
-	'A'
-		writeln
-			'Excellent!'
-	'B'
-	'C'
-		writeln
-			'Well done'
-	'D'
-		writeln
-			'You passed'
-	'F'
-		writeln
-			'Better try again'
+case
+	grade
+		'A'
+			writeln
+				'Excellent!'
+		'B'
+		'C'
+			writeln
+				'Well done'
+		'D'
+			writeln
+				'You passed'
+		'F'
+			writeln
+				'Better try again'
 writeln
 	'Your grade is  '
 	grade
