@@ -12,7 +12,8 @@
 
         public override string Print(int depth = 0)
         {
-            return Body.Print(depth) + UntilCondition.Print(depth);
+            return base.Print(depth) + "repeat\n" + Body.Print(depth + 1) +
+                   base.Print(depth) + "until\n" + UntilCondition.Print(depth + 1);
         }
     }
 }

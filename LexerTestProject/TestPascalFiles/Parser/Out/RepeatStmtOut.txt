@@ -1,14 +1,16 @@
 :=
 	a
 	10
-writeln
-	'value of a: '
-	a
-:=
-	a
-	+
+repeat
+	writeln
+		'value of a: '
 		a
-		1
-=
-	a
-	20
+	:=
+		a
+		+
+			a
+			1
+until
+	=
+		a
+		20
