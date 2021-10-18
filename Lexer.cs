@@ -84,20 +84,24 @@ namespace myPascal
                     else
                         _currentSymbolNumber++;
                 }
+
+                sym = (char) _stream.Read(); // Eat }
+                _currentSymbolNumber++;
                 _buffer = sym;
-                return true;
+                return CheckForComment(sym);
             }
             else if (sym == '/' && (sym = (char) _stream.Read()) == '/') // Cautions
             {
-                // TODO: Fix bug with (see NilAndUnaries test)
                 while (sym != '\n' && !_stream.EndOfStream)
                 {
                     sym = (char) _stream.Read();
                 }
-                _currentSymbolNumber = 0;
+                // To satisfy invariant
+                sym = (char) _stream.Read();
+                _currentSymbolNumber = 1;
                 _currentStringNumber++;
                 _buffer = sym;
-                return true;
+                return CheckForComment(sym);    
             }
 
             _buffer = sym;
@@ -126,12 +130,8 @@ namespace myPascal
         public void NextLexem()
         {
             // EOF -- will be fine, 'cause 56635 is not valid symbol in unicode table 
-            char currSym = CheckForWhitespaces(_buffer);
-            if (CheckForComment(_buffer))
-            {
-                _currentSymbolNumber++;
-                currSym = CheckForWhitespaces((char) _stream.Read());
-            }
+            CheckForComment(_buffer);
+            var currSym = _buffer;
             
             if (currSym == '}')
                 throw new Exception($"{_filePath}{(_currentStringNumber, _currentSymbolNumber)}" +

@@ -69,7 +69,8 @@ namespace LexerTestProject
                             }
                             catch (Exception e)
                             {
-                                Assert.AreEqual(e.Message, line, $"In test file {filePath} \n in output {outFilePath}");
+                                Assert.AreEqual(e.Message, line, $"In test file {filePath} \n in output {outFilePath} \n" +
+                                                                 $"{e.Message} \n {line} \n");
                                 break;
                             }
                             line = outFile.ReadLine();

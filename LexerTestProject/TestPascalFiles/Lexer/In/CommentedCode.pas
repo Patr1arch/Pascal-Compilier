@@ -17,3 +17,10 @@ program Hello {program Hello}
 program {aba 
 caba} Hello
 
+//a
+b
+//
+// Some commented text
+//
+c
+//
