@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using myPascal.Lexems;
@@ -158,21 +159,20 @@ namespace myPascal
                     _currentSymbolNumber++;
                 }
 
-                if (detectedType == Pascal.NumericTypes.Binary) // TODO: refactor to switch statement
+                switch (detectedType)
                 {
-                    literal.Value = Convert.ToInt64(literal.SourceCode.Substring(1), 2).ToString();
-                }
-                else if (detectedType == Pascal.NumericTypes.Hex)
-                {
-                    literal.Value = Convert.ToInt64(literal.SourceCode.Substring(1), 16).ToString();
-                }
-                else if (detectedType == Pascal.NumericTypes.Real)
-                {
+                    case Pascal.NumericTypes.Binary:
+                        literal.Value = Convert.ToInt64(literal.SourceCode.Substring(1), 2).ToString();
+                        break;
+                    case Pascal.NumericTypes.Hex:
+                        literal.Value = Convert.ToInt64(literal.SourceCode.Substring(1), 16).ToString();
+                        break;
+                    case Pascal.NumericTypes.Real:
                         literal.Value = double.Parse(literal.SourceCode, CultureInfo.InvariantCulture).ToString();
-                }
-                else
-                {
-                    literal.Value = Convert.ToInt64(literal.SourceCode, 10).ToString();
+                        break;
+                    default:
+                        literal.Value = Convert.ToInt64(literal.SourceCode, 10).ToString();
+                        break;
                 }
 
                 if (detectedType == Pascal.NumericTypes.Real)
