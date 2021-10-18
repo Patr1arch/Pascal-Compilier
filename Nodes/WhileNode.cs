@@ -12,9 +12,10 @@ namespace myPascal.Nodes
             Condition = nd;
         }
 
-        public override string Print(int depth = 0)
+        public override string Print(int depth = 0) 
         {
-            return Condition.Print(depth) + Body.Print(depth);
+            return base.Print(depth) + "while\n" + Condition.Print(depth + 1) + 
+                   base.Print(depth) + "do\n" + Body.Print(depth + 1);
         }
     }
 }

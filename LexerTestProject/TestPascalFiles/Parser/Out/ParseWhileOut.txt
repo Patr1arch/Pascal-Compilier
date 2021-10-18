@@ -1,12 +1,14 @@
 :=
 	a
 	true
-a
-:=
-	b
-	5
-writeln
-	b
-:=
+while
 	a
-	false
+do
+	:=
+		b
+		5
+	writeln
+		b
+	:=
+		a
+		false
